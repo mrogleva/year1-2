@@ -5,3 +5,14 @@ da proverq za memory leaks?
     някой грижи ли се за това вместо нас?
     
 При добавяне на char в края на стринга какво става, ако се подаде аргумент isdoa
+
+access the last element
+  test with more than one terminating characters
+-------------------------------------------------------------------------------
+tests_main.cpp:77
+...............................................................................
+
+tests_main.cpp:80: FAILED:
+  REQUIRE( testObj.back() == '3' )
+with expansion:
+  0 == '3'
