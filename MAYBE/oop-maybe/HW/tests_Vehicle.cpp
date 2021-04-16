@@ -9,11 +9,11 @@ TEST_CASE( "test Vehicle", "[MyString]" )
     std::size_t space = 5;
 
     Vehicle testVehicle(registration, description, space);
-    //const char* reg = testVehicle.registration();
-    //const char* descript = testVehicle.description();
+    const char* reg = testVehicle.registration();
+    const char* descript = testVehicle.description();
     std::size_t s = testVehicle.space();
 
-    /*SECTION("test registration")
+    SECTION("test registration")
     {
         REQUIRE(reg[0] == 'r');
         REQUIRE(reg[1] == 'e');
@@ -26,7 +26,7 @@ TEST_CASE( "test Vehicle", "[MyString]" )
         REQUIRE(descript[2] == 's');
         REQUIRE(descript[7] == '\0');
         REQUIRE_THROWS_AS(descript[8], std::out_of_range);
-    }*/
+    }
     SECTION("test space")
     {
         REQUIRE(s == 5);

@@ -335,54 +335,55 @@ TEST_CASE("c_str", "[MyString]")
 
 
 
-TEST_CASE("operator + char", "[MyString]")
-{
-    char test[] = {"Hello1234"};
-    MyString testObj(test);
-    MyString emptyObj;
-    const char z = 'z';
+// TEST_CASE("operator + char", "[MyString]")
+// {
+//     char test[] = {"Hello1234"};
+//     MyString testObj(test);
+//     MyString emptyObj;
+//     const char z = 'z';
     
-    SECTION("test")
-    {
-        MyString sumTest = testObj + z;
-        REQUIRE(sumTest.size() == 11);
-        REQUIRE(sumTest.back() == 'z');
-        REQUIRE(sumTest.at(2) == 'l');
-        REQUIRE_THROWS_AS(sumTest.at(11), std::out_of_range);
-    }
-    SECTION("empty")
-    {
-        MyString sumEmpty = emptyObj + z;
-        REQUIRE(sumEmpty.at(1) == '\0');
-        REQUIRE(sumEmpty.back() == 'z');
-        REQUIRE(sumEmpty.at(0) == 'z');
-        REQUIRE_THROWS_AS(sumEmpty.at(2), std::out_of_range);
-    }
-}
+//     SECTION("test")
+//     {
+//         MyString sumTest = testObj + z;
+//         REQUIRE(sumTest.size() == 11);
+//         REQUIRE(sumTest.back() == 'z');
+//         REQUIRE(sumTest.at(2) == 'l');
+//         REQUIRE_THROWS_AS(sumTest.at(11), std::out_of_range);
+//     }
+//     SECTION("empty")
+//     {
+//         MyString sumEmpty = emptyObj + z;
+//         REQUIRE(sumEmpty.at(1) == '\0');
+//         REQUIRE(sumEmpty.back() == 'z');
+//         REQUIRE(sumEmpty.at(0) == 'z');
+//         REQUIRE_THROWS_AS(sumEmpty.at(2), std::out_of_range);
+//     }
+// }
 
-TEST_CASE("operator + MyString", "[MyString]")
-{
-    char test[] = {"Hello1234"};
-    MyString testObj(test);
-    char rhs[] = {"56789"};
-    const MyString rhsO(rhs);
-    MyString emptyObj;
+// TEST_CASE("operator + MyString", "[MyString]")
+// {
+//     char test[] = {"Hello1234"};
+//     MyString testObj(test);
+//     char rhs[] = {"56789"};
+//     const MyString rhsO(rhs);
+//     MyString emptyObj;
     
-    MyString sumTest = testObj + rhsO;
-    MyString sumEmpty = emptyObj + rhsO;
+//     MyString sumTest = testObj + rhsO;
+//     MyString sumEmpty = emptyObj + rhsO;
 
-    SECTION("test")
-    {
-        REQUIRE_THROWS_AS(sumTest.at(14), std::out_of_range);
-        REQUIRE(sumTest.at(13) == '\0');
-        REQUIRE(sumTest.back() == '9');
-        REQUIRE(sumTest.at(9) == '5');
-    }
-    SECTION("empty")
-    {
-        REQUIRE_THROWS_AS(sumEmpty.at(6), std::out_of_range);
-        REQUIRE(sumEmpty.at(5) == '\0');
-        REQUIRE(sumEmpty.back() == '9');
-        REQUIRE(sumEmpty.front() == '5');
-    }
-}
+//     SECTION("test")
+//     {
+//         REQUIRE_THROWS_AS(sumTest.at(14), std::out_of_range);
+//         REQUIRE(sumTest.at(13) == '\0');
+//         REQUIRE(sumTest.back() == '9');
+//         REQUIRE(sumTest.at(9) == '5');
+//     }
+//     SECTION("empty")
+//     {
+//         REQUIRE_THROWS_AS(sumEmpty.at(6), std::out_of_range);
+//         REQUIRE(sumEmpty.at(5) == '\0');
+//         REQUIRE(sumEmpty.back() == '9');
+//         REQUIRE(sumEmpty.front() == '5');
+//     }
+// }
+
