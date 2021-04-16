@@ -59,50 +59,52 @@ const char& MyString::at(std::size_t pos) const
 
 char& MyString::operator[](std::size_t pos)
 {
-    return string[pos];
+    return at(pos);
 }
 
 const char& MyString::operator[](std::size_t pos) const
 {
-    return string[pos];
+    return at(pos);
 }
 
 char& MyString::front()
 {
-    return string[0];
+    return at(0);
 }
 
 const char& MyString::front() const
 {
-    return string[0];
+    return at(0);
 }
 
 char& MyString::back()
 {
-    return string[strSize-2];
+    std::size_t pos = strSize - 2;
+    return at(pos);
 }
 
 const char& MyString::back() const
 {
-    for (std::size_t i = strSize - 2; i>0; --i)
-    {
-        if(string[i]!='\0')
-        {
-            return string[i];
-        }
-    }
-    return string[0];
+    std::size_t pos = strSize - 2;
+    return at(pos);
 }
 
 bool MyString::empty() const
 {
-    if(string[0]=='\0')
+    if(strSize == 0)
     {
         return true;
     }
     else
     {
-        return false;
+        if(string[0]=='\0')
+        {
+            return true;
+        }
+         else
+        {
+            return false;
+        }
     }
 }
 
@@ -113,38 +115,58 @@ std::size_t MyString::size() const
 
 void MyString::clear()
 {
-    for(std::size_t i=0; i<strSize; ++i)
-    {
-        string[i]='\0';
-    }
+    // for(std::size_t i=0; i<strSize; ++i)
+    // {
+    //     string[i]='\0';
+    // }
+    delete[] string;
+    string = nullptr;
+    strSize = 0;
 }
 
 void MyString::push_back(char c)
 {
     char* tempString = nullptr;
-    try
+    if(empty())
     {
-        tempString = new char[strSize+1];
-    }
-    catch (std::bad_alloc& ba)
-    {
-        std::cout<<"Memory error, \""<<c<<"\" was not added.";
-        throw;
-    } //in case of bad allocation, the function should end here
-   
-    strSize+=1;
-    for(std::size_t i=0; i<strSize-2; ++i)
-    {
-        tempString[i] = string[i];
-    }
-    tempString[strSize-2] = c;
-    tempString[strSize-1] = '\0';
+        try
+        {
+            tempString = new char[2];
+        }
+        catch (std::bad_alloc& ba)
+        {
+            std::cout<<"Memory error, \""<<c<<"\" was not added.";
+            throw;
+        } //in case of bad allocation, the function should end here
 
+        tempString[0] = c;
+        tempString[1] = '\0';
+    }
+    else
+    {
+        try
+        {
+            tempString = new char[++strSize];
+        }
+        catch (std::bad_alloc& ba)
+        {
+            std::cout<<"Memory error, \""<<c<<"\" was not added.";
+            throw;
+        } //in case of bad allocation, the function should end here
+    
+        for(std::size_t i=0; i<strSize-2; ++i)
+        {
+            tempString[i] = string[i];
+        }
+        tempString[strSize-2] = c;
+        tempString[strSize-1] = '\0';
+    }
+    
     delete[] string; //I am trying to prevent a memory leak :)
     string = tempString;
 }
 
-/*void MyString::pop_back()
+void MyString::pop_back()
 {
     char* tempString = nullptr;
     try
@@ -163,7 +185,7 @@ void MyString::push_back(char c)
     delete[] string; //I am trying to prevent a memory leak :)
     string = tempString;
     strSize-=1;
-}*/
+}
 
 MyString& MyString::operator+=(char c)
 {
