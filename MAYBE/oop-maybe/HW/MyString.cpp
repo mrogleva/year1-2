@@ -245,14 +245,14 @@ MyString& MyString::operator+=(const MyString& rhs)
 
 MyString MyString::operator+(char c) const
 {
-    MyString sum(string); 
+    MyString sum(c_str()); 
     sum += c;
     return sum;
 }
 
 MyString MyString::operator+(const MyString& rhs) const
 {
-    MyString sum(string); 
+    MyString sum(c_str()); 
     sum += rhs;
     return sum;
 }

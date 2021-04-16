@@ -2,4 +2,4 @@
 при заделяне на динамична памет без nothrow, какво трябва да направим ние за да не изтича памет?
     някой грижи ли се за това вместо нас?
     
-eventualno da optimiziram MyString::push_back 
+FIX + OPERATOR

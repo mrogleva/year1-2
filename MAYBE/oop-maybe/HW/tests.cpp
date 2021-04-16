@@ -324,15 +324,16 @@ TEST_CASE("c_str", "[MyString]")
     SECTION("test")
     {
         REQUIRE(str[9] == '\0');
-        REQUIRE(str[8] == 'z');
+        REQUIRE(str[8] == '4');
         REQUIRE(str[2] == 'l');
-        REQUIRE_THROWS_AS(str[10], std::out_of_range);
     }
     SECTION("empty")
     {
-        REQUIRE_THROWS_AS(emp[1], std::out_of_range);
+        REQUIRE(emp == nullptr);
     }
 }
+
+
 
 TEST_CASE("operator + char", "[MyString]")
 {
