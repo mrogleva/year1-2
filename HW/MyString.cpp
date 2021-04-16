@@ -144,7 +144,7 @@ void MyString::push_back(char c)
     string = tempString;
 }
 
-/*void MyString::pop_back()
+void MyString::pop_back()
 {
     char* tempString = nullptr;
     try
@@ -156,16 +156,14 @@ void MyString::push_back(char c)
         std::cout<<"Memory error.";
         throw;
     } //in case of bad allocation, the function should end here
-    strSize-=1;
-    for(std::size_t i=0; i<strSize-1; ++i)
-    {
-        tempString[i] = string[i];
-    }
-    tempString[strSize-1]='\0';
+
+    string[strSize-2]='\0';
+    std::strcpy(tempString, string);
     
     delete[] string; //I am trying to prevent a memory leak :)
     string = tempString;
-}*/
+    strSize-=1;
+}
 
 MyString& MyString::operator+=(char c)
 {
