@@ -79,14 +79,7 @@ const char& MyString::front() const
 
 char& MyString::back()
 {
-    for (std::size_t i = strSize - 2; i>0; --i)
-    {
-        if(string[i]!='\0')
-        {
-            return string[i];
-        }
-    }
-    return string[0];
+    return string[strSize-2];
 }
 
 const char& MyString::back() const
@@ -151,7 +144,7 @@ void MyString::push_back(char c)
     string = tempString;
 }
 
-void MyString::pop_back()
+/*void MyString::pop_back()
 {
     char* tempString = nullptr;
     try
@@ -172,7 +165,7 @@ void MyString::pop_back()
     
     delete[] string; //I am trying to prevent a memory leak :)
     string = tempString;
-}
+}*/
 
 MyString& MyString::operator+=(char c)
 {
