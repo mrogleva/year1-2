@@ -153,8 +153,8 @@ TEST_CASE( "func to add a char at the end of the string", "[MyString]" )
     SECTION("test empty")
     {
         emptyObj.push_back(z);
-        REQUIRE(emptyObj.size() == 1);
         REQUIRE(emptyObj.back() == 'z');
+        REQUIRE(emptyObj.size() == 2);
     }
 }
 
@@ -179,11 +179,10 @@ TEST_CASE("operator += char", "[MyString]")
     MyString testObj(test);
     MyString emptyObj;
     const char z = 'z';
-    testObj += z;
-    emptyObj += z;
 
     SECTION("test")
-    {
+    {      
+        testObj += z;
         REQUIRE_THROWS_AS(testObj.at(11), std::out_of_range);
         REQUIRE(testObj.at(10) == '\0');
         REQUIRE(testObj.back() == 'z');
@@ -191,89 +190,48 @@ TEST_CASE("operator += char", "[MyString]")
     }
     SECTION("empty")
     {
-        REQUIRE_THROWS_AS(testObj.at(2), std::out_of_range);
-        REQUIRE(testObj.at(1) == '\0');
-        REQUIRE(testObj.back() == 'z');
-        REQUIRE(testObj.at(0) == 'z');
+        emptyObj += z;
+        REQUIRE_THROWS_AS(emptyObj.at(2), std::out_of_range);
+        REQUIRE(emptyObj.back() == 'z');
+        REQUIRE(emptyObj.at(0) == 'z');
+        REQUIRE(emptyObj.at(1) == '\0');
     }
 }
 
-TEST_CASE("operator += string", "[MyString]")
-{
-    char test[] = {"Hello1234"};
-    MyString testObj(test);
-    const char rhs[] = {"56789"};
-    MyString emptyObj;
-    testObj+=rhs;
-    emptyObj+=rhs;
-
-    SECTION("test")
-    {
-        REQUIRE_THROWS_AS(testObj.at(14), std::out_of_range);
-        REQUIRE(testObj.at(13) == '\0');
-        REQUIRE(testObj.back() == '9');
-        REQUIRE(testObj.at(9) == '5');
-    }
-    SECTION("empty")
-    {
-        REQUIRE_THROWS_AS(testObj.at(6), std::out_of_range);
-        REQUIRE(testObj.at(5) == '\0');
-        REQUIRE(testObj.back() == '9');
-        REQUIRE(testObj.front() == '5');
-    }
-}
-
-TEST_CASE("operator + char", "[MyString]")
-{
-    char test[] = {"Hello1234"};
-    MyString testObj(test);
-    MyString emptyObj;
-    const char z = 'z';
-    MyString sumTest = testObj + z;
-    MyString sumEmpty = emptyObj + z;
-    
-    SECTION("test")
-    {
-        REQUIRE_THROWS_AS(sumTest.at(11), std::out_of_range);
-        REQUIRE(sumTest.at(10) == '\0');
-        REQUIRE(sumTest.back() == 'z');
-        REQUIRE(sumTest.at(2) == 'l');
-    }
-    SECTION("empty")
-    {
-        REQUIRE_THROWS_AS(sumEmpty.at(2), std::out_of_range);
-        REQUIRE(sumEmpty.at(1) == '\0');
-        REQUIRE(sumEmpty.back() == 'z');
-        REQUIRE(sumEmpty.at(0) == 'z');
-    }
-}
-
-TEST_CASE("operator + MyString", "[MyString]")
+TEST_CASE("operator += MyString", "[MyString]")
 {
     char test[] = {"Hello1234"};
     MyString testObj(test);
     char rhs[] = {"56789"};
-    const MyString rhsO(rhs);
+    MyString rhsO(rhs);
     MyString emptyObj;
     
-    MyString sumTest = testObj + rhsO;
-    MyString sumEmpty = emptyObj + rhsO;
-
     SECTION("test")
     {
-        REQUIRE_THROWS_AS(sumTest.at(14), std::out_of_range);
-        REQUIRE(sumTest.at(13) == '\0');
-        REQUIRE(sumTest.back() == '9');
-        REQUIRE(sumTest.at(9) == '5');
+        testObj += rhsO;
+        REQUIRE_THROWS_AS(testObj.at(15), std::out_of_range);
+        REQUIRE(testObj.back() == '9');
+        REQUIRE(testObj.at(9) == '5');
     }
-    SECTION("empty")
+    SECTION("empty +=")
     {
-        REQUIRE_THROWS_AS(sumEmpty.at(6), std::out_of_range);
-        REQUIRE(sumEmpty.at(5) == '\0');
-        REQUIRE(sumEmpty.back() == '9');
-        REQUIRE(sumEmpty.front() == '5');
+        emptyObj += rhsO;
+        REQUIRE(emptyObj.at(5) == '\0');
+        REQUIRE(emptyObj.back() == '9');
+        REQUIRE(emptyObj.front() == '5');
+        REQUIRE_THROWS_AS(emptyObj.at(6), std::out_of_range);
+    }
+    SECTION("+= empty")
+    {
+        rhsO += emptyObj;
+        REQUIRE(rhsO.at(5) == '\0');
+        REQUIRE(rhsO.back() == '9');
+        REQUIRE(rhsO.front() == '5');
+        REQUIRE_THROWS_AS(rhsO.at(6), std::out_of_range);
     }
 }
+
+//////////////////////////////////////
 
 TEST_CASE("operator ==", "[MyString]")
 {
@@ -365,13 +323,65 @@ TEST_CASE("c_str", "[MyString]")
     
     SECTION("test")
     {
-        REQUIRE_THROWS_AS(str[10], std::out_of_range);
         REQUIRE(str[9] == '\0');
         REQUIRE(str[8] == 'z');
         REQUIRE(str[2] == 'l');
+        REQUIRE_THROWS_AS(str[10], std::out_of_range);
     }
     SECTION("empty")
     {
-        REQUIRE_THROWS_AS(emp[0], std::out_of_range);
+        REQUIRE_THROWS_AS(emp[1], std::out_of_range);
+    }
+}
+
+TEST_CASE("operator + char", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    MyString emptyObj;
+    const char z = 'z';
+    
+    SECTION("test")
+    {
+        MyString sumTest = testObj + z;
+        REQUIRE(sumTest.size() == 11);
+        REQUIRE(sumTest.back() == 'z');
+        REQUIRE(sumTest.at(2) == 'l');
+        REQUIRE_THROWS_AS(sumTest.at(11), std::out_of_range);
+    }
+    SECTION("empty")
+    {
+        MyString sumEmpty = emptyObj + z;
+        REQUIRE(sumEmpty.at(1) == '\0');
+        REQUIRE(sumEmpty.back() == 'z');
+        REQUIRE(sumEmpty.at(0) == 'z');
+        REQUIRE_THROWS_AS(sumEmpty.at(2), std::out_of_range);
+    }
+}
+
+TEST_CASE("operator + MyString", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    char rhs[] = {"56789"};
+    const MyString rhsO(rhs);
+    MyString emptyObj;
+    
+    MyString sumTest = testObj + rhsO;
+    MyString sumEmpty = emptyObj + rhsO;
+
+    SECTION("test")
+    {
+        REQUIRE_THROWS_AS(sumTest.at(14), std::out_of_range);
+        REQUIRE(sumTest.at(13) == '\0');
+        REQUIRE(sumTest.back() == '9');
+        REQUIRE(sumTest.at(9) == '5');
+    }
+    SECTION("empty")
+    {
+        REQUIRE_THROWS_AS(sumEmpty.at(6), std::out_of_range);
+        REQUIRE(sumEmpty.at(5) == '\0');
+        REQUIRE(sumEmpty.back() == '9');
+        REQUIRE(sumEmpty.front() == '5');
     }
 }

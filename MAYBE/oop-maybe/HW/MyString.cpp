@@ -135,7 +135,7 @@ void MyString::push_back(char c)
             std::cout<<"Memory error, \""<<c<<"\" was not added.";
             throw;
         } //in case of bad allocation, the function should end here
-
+        strSize = 2;
         tempString[0] = c;
         tempString[1] = '\0';
     }
