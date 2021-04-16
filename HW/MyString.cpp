@@ -23,6 +23,9 @@ MyString::MyString(const char* str)
         string[i] = str[i]; //да проверя, че си се слага '\0'
     }
     strSize = tmpSize;
+    /*strSize = strlen(str) + 1;
+    string = new char[strSize];
+    strcpy(string, str);*/
 }
 
 MyString::~MyString()
@@ -144,14 +147,14 @@ void MyString::push_back(char c)
     string = tempString;
 }
 
-void MyString::pop_back()
+/*void MyString::pop_back()
 {
     char* tempString = nullptr;
     try
     {
         tempString = new char[strSize-1];
     }
-    catch (std::bad_alloc& ba)
+    catch (const std::bad_alloc& ba)
     {
         std::cout<<"Memory error.";
         throw;
@@ -163,7 +166,7 @@ void MyString::pop_back()
     delete[] string; //I am trying to prevent a memory leak :)
     string = tempString;
     strSize-=1;
-}
+}*/
 
 MyString& MyString::operator+=(char c)
 {
