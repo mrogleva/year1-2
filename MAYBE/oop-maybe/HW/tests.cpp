@@ -4,8 +4,6 @@
 TEST_CASE( "position check", "[MyString]" )
 {
     char test[] = {"Hello1234"};
-    //char* str = &test[0];
-    //MyString testObj(str);
     MyString testObj(test);
 
     SECTION("test with valid position")
@@ -72,11 +70,6 @@ TEST_CASE( "access the last element", "[MyString]" )
     SECTION("test as is")
     {
         REQUIRE(testObj.back() == '4');
-    }
-    SECTION("test with more than one terminating characters")
-    {
-        //testObj.pop_back();
-        REQUIRE(testObj.back() == '3');
     }
 }
 
@@ -169,7 +162,7 @@ TEST_CASE("removes the last character of the string", "[MyString]") //
 {
     char test[] = {"Hello1234"};
     MyString testObj(test);
-    //testObj.pop_back();
+    testObj.pop_back();
 
     SECTION("test")
     {

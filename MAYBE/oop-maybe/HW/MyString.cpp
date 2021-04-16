@@ -91,20 +91,17 @@ const char& MyString::back() const
 
 bool MyString::empty() const
 {
-    if(strSize == 0)
+    if(strSize == 0 || strSize ==1)
+    {
+        return true;
+    }
+    if(string[0]=='\0')
     {
         return true;
     }
     else
     {
-        if(string[0]=='\0')
-        {
-            return true;
-        }
-         else
-        {
-            return false;
-        }
+        return false;
     }
 }
 
@@ -168,23 +165,25 @@ void MyString::push_back(char c)
 
 void MyString::pop_back()
 {
-    char* tempString = nullptr;
-    try
+    if(empty()==false)
     {
-        tempString = new char[strSize-1];
-    }
-    catch (std::bad_alloc& ba)
-    {
-        std::cout<<"Memory error.";
-        throw;
-    } //in case of bad allocation, the function should end here
+        char* tempString = nullptr;
+        try
+        {
+            tempString = new char[--strSize];
+        }
+        catch (std::bad_alloc& ba)
+        {
+            std::cout<<"Memory error, nothing was removed.";
+            throw;
+        } //in case of bad allocation, the function should end here
 
-    string[strSize-2]='\0';
-    std::strcpy(tempString, string);
-    
-    delete[] string; //I am trying to prevent a memory leak :)
-    string = tempString;
-    strSize-=1;
+        string[strSize-1]='\0';
+        std::strcpy(tempString, string);
+        
+        delete[] string; //I am trying to prevent a memory leak :)
+        string = tempString;
+    }
 }
 
 MyString& MyString::operator+=(char c)
@@ -195,50 +194,83 @@ MyString& MyString::operator+=(char c)
 
 MyString& MyString::operator+=(const MyString& rhs)
 {
-    char* tempString = nullptr;
-    try
+    if(rhs.empty())
     {
-        tempString = new char[strSize + rhs.strSize - 1];
+        return *this;
     }
-    catch (std::bad_alloc& ba)
-    {
-        std::cout<<"Memory error, nothing was added.";
-        throw;
-    } //in case of bad allocation, the function should end here
 
-    for(std::size_t i=0; i<strSize-1; ++i) //leaving out the '\0' from this
+    char* tempString = nullptr;
+    if(empty())
     {
-        tempString[i] = string[i];
+        try
+        {
+            tempString = new char[rhs.size()];
+        }
+        catch (std::bad_alloc& ba)
+        {
+            std::cout<<"Memory error, nothing was added.";
+            throw;
+        } //in case of bad allocation, the function should end here
+        strcpy(tempString, rhs.c_str());
+        strSize = rhs.size();
+        delete[] string;
+        string = tempString;
+        return *this;
     }
-    for(std::size_t i=0; i < rhs.strSize; ++i)
+    else 
     {
-        tempString[i+strSize-1] = rhs.string[i]; //би трябвало да се включи '\0' от rhs
-    }
-    strSize = strSize + rhs.strSize - 1; //едно '\0' по-малко
-    string = tempString;
-    return *this;
+        try
+        {
+            tempString = new char[strSize + rhs.strSize - 1];
+        }
+        catch (std::bad_alloc& ba)
+        {
+            std::cout<<"Memory error, nothing was added.";
+            throw;
+        } //in case of bad allocation, the function should end here
+        for(std::size_t i=0; i<strSize-1; ++i) //leaving out the '\0' from this
+        {
+            tempString[i] = string[i];
+        }
+        for(std::size_t i=0; i < rhs.strSize; ++i)
+        {
+            tempString[i+strSize-1] = rhs.string[i]; //includes '\0' from rhs
+        }
+        strSize = strSize + rhs.strSize - 1;
+        delete[] string;
+        string = tempString;
+        return *this;
+    } 
 }
 
 MyString MyString::operator+(char c) const
 {
-    MyString sum; 
-    sum += this->string;
+    MyString sum(string); 
     sum += c;
     return sum;
-
 }
 
 MyString MyString::operator+(const MyString& rhs) const
 {
-    MyString sum; 
-    sum += this->string;
+    MyString sum(string); 
     sum += rhs;
     return sum;
 }
 
 bool MyString::operator==(const MyString &rhs) const
 {
-    if(strcmp(this->string, rhs.string)==0)
+    if(empty()==false && rhs.empty()==false)
+    {
+        if(strcmp(this->string, rhs.string)==0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    if(empty() && rhs.empty())
     {
         return true;
     }
@@ -255,28 +287,32 @@ bool MyString::operator==(const MyString &rhs) const
 
 bool MyString::operator<(const MyString &rhs) const
 {
-    if(strcmp(this->string, rhs.string)<0)
+    if(empty()==false && rhs.empty()==false)
     {
-        return true;
+        if(strcmp(this->string, rhs.string)<0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    else
+    if(empty() && rhs.empty())
     {
         return false;
+    }
+    if(empty()==false && rhs.empty())
+    {
+        return false;
+    }
+    if(empty() && rhs.empty()==false)
+    {
+        return true;
     }
 }
 
 const char* MyString::c_str() const
 {
-    if(strSize>0)
-    {
-        char* tmp = new char[strSize]; //
-        strcpy(tmp, string);
-        const char* str = tmp; 
-        tmp = nullptr;
-        return str;
-    }
-    else
-    {
-        return nullptr;
-    }
+    return string;
 }
