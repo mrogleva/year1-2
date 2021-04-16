@@ -144,7 +144,7 @@ void MyString::push_back(char c)
     string = tempString;
 }
 
-void MyString::pop_back()
+/*void MyString::pop_back()
 {
     char* tempString = nullptr;
     try
@@ -163,7 +163,7 @@ void MyString::pop_back()
     delete[] string; //I am trying to prevent a memory leak :)
     string = tempString;
     strSize-=1;
-}
+}*/
 
 MyString& MyString::operator+=(char c)
 {
