@@ -148,24 +148,25 @@ TEST_CASE( "func to add a char at the end of the string", "[MyString]" )
     char test[] = {"Hello1234"};
     MyString testObj(test);
     MyString emptyObj;
+    const char z = 'z';
 
     SECTION("test full")
     {
-        testObj.push_back('d');
+        testObj.push_back(z);
         REQUIRE(testObj.size() == 11);
-        REQUIRE(testObj.back() == 'd');
+        REQUIRE(testObj.back() == 'z');
         REQUIRE(testObj.at(0) == 'H');
         REQUIRE(testObj.at(2) == 'l');
     }
     SECTION("test empty")
     {
-        emptyObj.push_back('z');
+        emptyObj.push_back(z);
         REQUIRE(emptyObj.size() == 1);
         REQUIRE(emptyObj.back() == 'z');
     }
 }
 
-TEST_CASE( "removes the last character of the string", "[MyString]" ) //
+TEST_CASE("removes the last character of the string", "[MyString]") //
 {
     char test[] = {"Hello1234"};
     MyString testObj(test);
@@ -173,10 +174,212 @@ TEST_CASE( "removes the last character of the string", "[MyString]" ) //
     SECTION("test")
     {
         testObj.pop_back();
-        REQUIRE(testObj.at(9) == '\0');
+        REQUIRE_THROWS_AS(testObj.at(9), std::out_of_range);
         REQUIRE(testObj.at(8) == '\0');
         REQUIRE(testObj.back() == '3');
         REQUIRE(testObj.at(2) == 'l');
     }
 }
 
+TEST_CASE("operator += char", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    MyString emptyObj;
+    const char z = 'z';
+    testObj += z;
+    emptyObj += z;
+
+    SECTION("test")
+    {
+        REQUIRE_THROWS_AS(testObj.at(11), std::out_of_range);
+        REQUIRE(testObj.at(10) == '\0');
+        REQUIRE(testObj.back() == 'z');
+        REQUIRE(testObj.at(2) == 'l');
+    }
+    SECTION("empty")
+    {
+        REQUIRE_THROWS_AS(testObj.at(2), std::out_of_range);
+        REQUIRE(testObj.at(1) == '\0');
+        REQUIRE(testObj.back() == 'z');
+        REQUIRE(testObj.at(0) == 'z');
+    }
+}
+
+TEST_CASE("operator += string", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    const char rhs[] = {"56789"};
+    MyString emptyObj;
+    testObj+=rhs;
+    emptyObj+=rhs;
+
+    SECTION("test")
+    {
+        REQUIRE_THROWS_AS(testObj.at(14), std::out_of_range);
+        REQUIRE(testObj.at(13) == '\0');
+        REQUIRE(testObj.back() == '9');
+        REQUIRE(testObj.at(9) == '5');
+    }
+    SECTION("empty")
+    {
+        REQUIRE_THROWS_AS(testObj.at(6), std::out_of_range);
+        REQUIRE(testObj.at(5) == '\0');
+        REQUIRE(testObj.back() == '9');
+        REQUIRE(testObj.front() == '5');
+    }
+}
+
+TEST_CASE("operator + char", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    MyString emptyObj;
+    const char z = 'z';
+    MyString sumTest = testObj + z;
+    MyString sumEmpty = emptyObj + z;
+    
+    SECTION("test")
+    {
+        REQUIRE_THROWS_AS(sumTest.at(11), std::out_of_range);
+        REQUIRE(sumTest.at(10) == '\0');
+        REQUIRE(sumTest.back() == 'z');
+        REQUIRE(sumTest.at(2) == 'l');
+    }
+    SECTION("empty")
+    {
+        REQUIRE_THROWS_AS(sumEmpty.at(2), std::out_of_range);
+        REQUIRE(sumEmpty.at(1) == '\0');
+        REQUIRE(sumEmpty.back() == 'z');
+        REQUIRE(sumEmpty.at(0) == 'zzs');
+    }
+}
+
+TEST_CASE("operator + MyString", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    char rhs[] = {"56789"};
+    const MyString rhsO(rhs);
+    MyString emptyObj;
+    
+    MyString sumTest = testObj + rhsO;
+    MyString sumEmpty = emptyObj + rhsO;
+
+    SECTION("test")
+    {
+        REQUIRE_THROWS_AS(sumTest.at(14), std::out_of_range);
+        REQUIRE(sumTest.at(13) == '\0');
+        REQUIRE(sumTest.back() == '9');
+        REQUIRE(sumTest.at(9) == '5');
+    }
+    SECTION("empty")
+    {
+        REQUIRE_THROWS_AS(sumEmpty.at(6), std::out_of_range);
+        REQUIRE(sumEmpty.at(5) == '\0');
+        REQUIRE(sumEmpty.back() == '9');
+        REQUIRE(sumEmpty.front() == '5');
+    }
+}
+
+TEST_CASE("operator ==", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    const MyString testObj2(test);
+    char rhs[] = {"56789"};
+    const MyString rhsO(rhs);
+    MyString empty1;
+    const MyString empty2;
+
+    bool y1 = testObj == testObj2;
+    bool y2 = testObj2 == testObj2;
+    bool y3 = empty1 == empty2;
+    bool n1 = testObj == rhsO;
+    bool n2 = testObj == empty2;
+
+    SECTION("true, test")
+    {
+        REQUIRE(y1 == true);
+    }
+    SECTION("true, the same")
+    {
+        REQUIRE(y2 == true);
+    }
+    SECTION("true, empty")
+    {
+        REQUIRE(y3 == true);
+    }
+    SECTION("false, test")
+    {
+        REQUIRE(n1 == false);
+    }
+    SECTION("false, empty")
+    {
+        REQUIRE(n2 == false);
+    }
+}
+
+TEST_CASE("operator <", "[MyString]")
+{
+    char test[] = {"1234"};
+    MyString testObj(test);
+    const MyString testObj2(test);
+    char rhs[] = {"5678"};
+    const MyString rhsO(rhs);
+    MyString empty1;
+    const MyString empty2;
+
+    bool y1 = testObj < rhsO;
+    bool y2 = empty1 < testObj2;
+    bool n1 = testObj < empty2;
+    bool n2 = empty1 < empty2;
+    bool n3 = testObj2 < testObj2;
+    bool n4 = rhsO < testObj;
+
+    SECTION("true, test")
+    {
+        REQUIRE(y1 == true);
+    }
+    SECTION("true, empty")
+    {
+        REQUIRE(y2 == true);
+    }
+    SECTION("false, empty")
+    {
+        REQUIRE(n1 == false);
+    }
+    SECTION("false, the same")
+    {
+        REQUIRE(n2 == false);
+        REQUIRE(n3 == false);
+
+    }
+    SECTION("false, test")
+    {
+        REQUIRE(n4 == false);
+    }
+}
+
+TEST_CASE("c_str", "[MyString]")
+{
+    char test[] = {"Hello1234"};
+    MyString testObj(test);
+    MyString emptyObj;
+    
+    const char* str = testObj.c_str();
+    const char* emp = emptyObj.c_str();
+    
+    SECTION("test")
+    {
+        REQUIRE_THROWS_AS(str[10], std::out_of_range);
+        REQUIRE(str[9] == '\0');
+        REQUIRE(str[8] == 'z');
+        REQUIRE(str[2] == 'l');
+    }
+    SECTION("empty")
+    {
+        REQUIRE_THROWS_AS(emp[0], std::out_of_range);
+    }
+}

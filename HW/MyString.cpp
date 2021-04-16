@@ -79,7 +79,14 @@ const char& MyString::front() const
 
 char& MyString::back()
 {
-    return string[strSize-2];
+    for (std::size_t i = strSize - 2; i>0; --i)
+    {
+        if(string[i]!='\0')
+        {
+            return string[i];
+        }
+    }
+    return string[0];
 }
 
 const char& MyString::back() const
@@ -146,7 +153,25 @@ void MyString::push_back(char c)
 
 void MyString::pop_back()
 {
-    string[strSize-2] = '\0';
+    char* tempString = nullptr;
+    try
+    {
+        tempString = new char[strSize-1];
+    }
+    catch (std::bad_alloc& ba)
+    {
+        std::cout<<"Memory error.";
+        throw;
+    } //in case of bad allocation, the function should end here
+    strSize-=1;
+    for(std::size_t i=0; i<strSize-1; ++i)
+    {
+        tempString[i] = string[i];
+    }
+    tempString[strSize-1]='\0';
+    
+    delete[] string; //I am trying to prevent a memory leak :)
+    string = tempString;
 }
 
 MyString& MyString::operator+=(char c)
@@ -229,9 +254,16 @@ bool MyString::operator<(const MyString &rhs) const
 
 const char* MyString::c_str() const
 {
-    char* tmp = new char[strSize]; //
-    strcpy(tmp, string);
-    const char* str = tmp; 
-    tmp = nullptr;
-    return str;
+    if(strSize>0)
+    {
+        char* tmp = new char[strSize]; //
+        strcpy(tmp, string);
+        const char* str = tmp; 
+        tmp = nullptr;
+        return str;
+    }
+    else
+    {
+        return nullptr;
+    }
 }
