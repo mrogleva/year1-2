@@ -1,8 +1,7 @@
 #include "catch2.hpp"
-#include "MyString.hpp"
 #include "Vehicle.hpp"
 
-TEST_CASE( "test Vehicle", "[MyString]" )
+TEST_CASE( "test Vehicle", "[Vehicle]" )
 {
     const char registration[] = {"reg"};
     const char description[] = {"descript"};
