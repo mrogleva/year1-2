@@ -5,3 +5,4 @@
 eventualno da optimiziram MyString::push_back 
 
 179: catch (const std::bad_alloc& ba) ???
+Какъв трябва да бъде деструктора на Vehicle
