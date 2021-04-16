@@ -19,13 +19,11 @@ TEST_CASE( "test Vehicle", "[MyString]" )
         REQUIRE(reg[1] == 'e');
         REQUIRE(reg[2] == 'g');
         REQUIRE(reg[3] == '\0');
-        REQUIRE_THROWS_AS(reg[4], std::out_of_range);
     }
     SECTION("test description")
     {
         REQUIRE(descript[2] == 's');
         REQUIRE(descript[7] == '\0');
-        REQUIRE_THROWS_AS(descript[8], std::out_of_range);
     }
     SECTION("test space")
     {
