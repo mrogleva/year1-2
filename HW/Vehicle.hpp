@@ -6,7 +6,7 @@
 class Vehicle 
 {
 private:
-    MyString reg; //кръстих ги така, защото средата по някаква причина се бърка иначе
+    MyString reg; 
     MyString descript;
     std::size_t spc;
 

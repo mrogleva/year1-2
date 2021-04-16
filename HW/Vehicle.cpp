@@ -2,26 +2,11 @@
 
 Vehicle::Vehicle(const char* registration, const char* description, std::size_t space)
 {
-    try
-    {
-        const MyString tempRegistration(registration);
-        reg += tempRegistration;
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() <<"Unable to allocate memory 1\n";
-        throw;
-    }
-    try
-    {
-        const MyString tempDescription(description);
-        descript += tempDescription;
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() <<"Unable to allocate memory 2\n";
-        throw;
-    }
+    MyString tempRegistration(registration);
+    reg += tempRegistration;
+    
+    MyString tempDescription(description);
+    descript += tempDescription;
     
     spc = space;
 }

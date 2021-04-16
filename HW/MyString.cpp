@@ -20,7 +20,7 @@ MyString::MyString(const char* str)
 
     for(size_t i = 0; i<tmpSize; ++i)
     {
-        string[i] = str[i]; //да проверя, че си се слага '\0'
+        string[i] = str[i];
     }
     strSize = tmpSize;
     /*strSize = strlen(str) + 1;
@@ -248,16 +248,17 @@ bool MyString::operator<(const MyString &rhs) const
 
 const char* MyString::c_str() const
 {
-    if(strSize>0)
-    {
-        char* tmp = new char[strSize]; //
-        strcpy(tmp, string);
-        const char* str = tmp; 
-        tmp = nullptr;
-        return str;
-    }
-    else
-    {
-        return nullptr;
-    }
+    // if(strSize>0)
+    // {
+    //     char* tmp = new char[strSize]; //
+    //     strcpy(tmp, string);
+    //     //const char* str = tmp; 
+    //     //tmp = nullptr;
+    //     return tmp;
+    // }
+    // else
+    // {
+    //     return nullptr;
+    // }
+    return string;
 }
