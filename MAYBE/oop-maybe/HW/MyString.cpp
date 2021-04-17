@@ -157,7 +157,7 @@ void MyString::push_back(char c)
         }
         catch (std::bad_alloc& ba)
         {
-            std::cout<<"Memory error, \""<<c<<"\" was not added.";
+            //std::cout<<"Memory error, \""<<c<<"\" was not added.";
             throw;
         } //in case of bad allocation, the function should end here
     
@@ -184,7 +184,7 @@ void MyString::pop_back()
         }
         catch (std::bad_alloc& ba)
         {
-            std::cout<<"Memory error, nothing was removed.";
+            //std::cout<<"Memory error, nothing was removed.";
             throw;
         } //in case of bad allocation, the function should end here
 
