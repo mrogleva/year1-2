@@ -3,8 +3,9 @@
 
 MyString::MyString()
 {
-    string = nullptr;
-    strSize = 0;
+    string = new char[1];
+    string[0] = '\0';
+    strSize = 1;
 }
 
 MyString::MyString(const char* str)
@@ -47,7 +48,7 @@ MyString::~MyString()
 
 char& MyString::at(std::size_t pos)
 {
-    if(pos<strSize)
+    if(pos<strSize-1)
     {
         return string[pos];
     }
@@ -125,13 +126,10 @@ std::size_t MyString::size() const
 
 void MyString::clear()
 {
-    // for(std::size_t i=0; i<strSize; ++i)
-    // {
-    //     string[i]='\0';
-    // }
     delete[] string;
-    string = nullptr;
-    strSize = 0;
+    string = new char[1];
+    string[0] = '\0';
+    strSize = 1;
 }
 
 void MyString::push_back(char c)
@@ -256,19 +254,19 @@ MyString& MyString::operator+=(const MyString& rhs)
     } 
 }
 
-// MyString MyString::operator+(char c) const
-// {
-//     MyString sum(c_str()); 
-//     sum += c;
-//     return sum;
-// }
+MyString MyString::operator+(char c) const
+{
+    MyString sum(c_str()); 
+    sum += c;
+    return sum;
+}
 
-// MyString MyString::operator+(const MyString& rhs) const
-// {
-//     MyString sum(c_str()); 
-//     sum += rhs;
-//     return sum;
-// }
+MyString MyString::operator+(const MyString& rhs) const
+{
+    MyString sum(c_str()); 
+    sum += rhs;
+    return sum;
+}
 
 bool MyString::operator==(const MyString &rhs) const
 {
