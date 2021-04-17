@@ -2,7 +2,7 @@
 
 Garage::Garage(std::size_t size)
 { 
-    Vehicle** adressBook = new Vehicle*[size]; //if an exception is thrown, no object of type Garage is created
+    adressBook = new Vehicle*[size]; //if an exception is thrown, no object of type Garage is created
     //
     capacity = size;
     used = 0;
@@ -123,7 +123,7 @@ bool Garage::empty() const
 
 std::size_t Garage::size() const
 {
-    return used;
+    return index;
 }
 
 void Garage::clear()
