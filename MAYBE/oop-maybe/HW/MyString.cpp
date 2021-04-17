@@ -25,6 +25,19 @@ MyString::MyString(const char* str)
     strSize = tmpSize;
 }
 
+MyString& MyString::operator=(const MyString& rhs)
+{
+    if(*this == rhs)
+    {
+        return *this;
+    }
+    else
+    {
+        clear();
+        *this+=rhs;
+    }
+}
+
 MyString::~MyString()
 {
     delete[] string;

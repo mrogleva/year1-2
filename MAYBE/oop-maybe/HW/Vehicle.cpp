@@ -11,6 +11,13 @@ Vehicle::Vehicle(const char* registration, const char* description, std::size_t 
     spc = space;
 }
 
+Vehicle& Vehicle::operator=(const Vehicle& rhs)
+{
+    reg = rhs.registration();
+    descript = rhs.description();
+    spc = rhs.space();
+}
+
 const char* Vehicle::registration() const
 {
     return reg.c_str();

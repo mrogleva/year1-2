@@ -12,11 +12,13 @@ private:
 public:
     MyString(); ///Default constructor. Creates an empty MyString
     MyString(const char* str); ///Makes an object for given string
+    MyString& operator=(const MyString& rhs); ///copy
 
     ~MyString(); 
 
     char& at(std::size_t pos); ///to access the element at a given position
     const char& at(std::size_t pos) const; ///to access the element at a given position for constants
+    
 
     char& front(); ///to access the first element of the string
     const char& front() const; ///to access the first element of the string, const
