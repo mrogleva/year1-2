@@ -138,4 +138,5 @@ const Vehicle* Garage::find(const char* registration) const
             return adressBook[i];     
         }
     }
+    return nullptr;
 }
