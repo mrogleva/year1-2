@@ -133,7 +133,7 @@ const void print(const char* cstring)
     std::cout<<std::endl;
 }
 
-//Благодаря и на Станимир Петров, че ми помогна :)
+//Много благодаря на Станимир Петров за насоките, които ми даде :) 
 
 //This was my idea for the user input verification. However, I found it annoying that 
 //you have to restart the program afrer every wrong input
