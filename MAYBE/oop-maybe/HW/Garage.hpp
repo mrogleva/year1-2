@@ -17,7 +17,7 @@ public:
     Garage& operator=(const Garage& rhs); ///Overloading operator = to safely copy objects
     ~Garage();
 
-    void insert(Vehicle& v); ///добавя превозното средство v в гаража
+    void insert(Vehicle& v); ///добавя превозното средство v в гаража (reference)
     void erase(const char* registration); ///премахва колата с регистрационен номер registration от гаража.
     const Vehicle& at(std::size_t pos) const; ///достъп до елемента намиращ се на позиция pos.
     const Vehicle& operator[](std::size_t pos) const; ///достъп до елемента намиращ се на позиция pos.
