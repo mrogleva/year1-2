@@ -18,7 +18,6 @@ public:
 
     char& at(std::size_t pos); ///to access the element at a given position
     const char& at(std::size_t pos) const; ///to access the element at a given position for constants
-    
 
     char& front(); ///to access the first element of the string
     const char& front() const; ///to access the first element of the string, const
@@ -44,7 +43,7 @@ public:
     bool operator<(const MyString &rhs) const; ///Проверява дали текущият низ предхожда лексикографски rhs.
 
     const char* c_str() const; ///връща указател към null-terminated масив от тип char, който има съдържание идентично с това на низа.
-
+    
 };
 
 
