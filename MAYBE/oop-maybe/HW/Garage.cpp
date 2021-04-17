@@ -38,29 +38,24 @@ void Garage::insert(Vehicle& v)
 {
     if(v.space() <= capacity - used)
     {
-std::cout<<"1\n";
         for(std::size_t i = 0; i < index; ++i)
         {
-std::cout<<"2\n";
-            if(v.registration() == adressBook[i]->registration())
+            MyString tempV(v.registration());
+            MyString tempThis(adressBook[i]->registration());
+            if(tempV == tempThis)
             {
                 throw std::runtime_error("There is already a Vehicle with this registration in the Garage.");
             }
-        }
-std::cout<<"3\n";       
-        adressBook[index] = &v;
-std::cout<<"4\n";       
+        }     
+        adressBook[index] = &v;   
         index += 1;
-std::cout<<"5\n";
         used += v.space();
         std::cout<<"The Vehicle was added\n";
     }
     else
     {
-std::cout<<"6\n";
         throw std::runtime_error("There is not enough space for this Vehicle in the Garage.");
     }
-std::cout<<"7\n";
 }
 
 void Garage::erase(const char* registration)

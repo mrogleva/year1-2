@@ -3,9 +3,10 @@
 
 TEST_CASE( "Creation and adding veh", "[Garage]" )
 {
-    Vehicle five1("reg", "des", 5);
+    const char reg[] = {"reg"};
+    Vehicle five1(reg, "des", 5);
     Vehicle five2("123", "123", 5);
-    Vehicle one1("reg", "des", 1);
+    Vehicle one1(reg, "des", 1);
     Vehicle one2("123", "123", 1);
     Garage gar(8);
 
@@ -49,6 +50,7 @@ TEST_CASE( "Creation and adding veh", "[Garage]" )
             
             SECTION("one more try")
             {
+                REQUIRE(gar.size() == 2);
                 REQUIRE_THROWS_AS(gar.insert(one1), std::runtime_error);
             }
         }
@@ -85,8 +87,7 @@ TEST_CASE( "Removing vehicles and clearing", "[Garage]" )
         
         SECTION("veh state")
         {
-            REQUIRE(one1.description() == "des");
-            REQUIRE(one1.registration() == &one);
+            REQUIRE(one1.space() == 1);
         }
     }
 }
