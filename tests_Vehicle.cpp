@@ -22,7 +22,7 @@ TEST_CASE( "test Vehicle", "[Vehicle]" )
     SECTION("test description")
     {
         REQUIRE(descript[2] == 's');
-        REQUIRE(descript[7] == '\0');
+        REQUIRE(descript[8] == '\0');
     }
     SECTION("test space")
     {
