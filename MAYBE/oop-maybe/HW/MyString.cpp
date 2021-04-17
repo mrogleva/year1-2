@@ -21,7 +21,7 @@ MyString::MyString(const char* str)
 
     for(size_t i = 0; i<tmpSize; ++i)
     {
-        string[i] = str[i]; //да проверя, че си се слага '\0'
+        string[i] = str[i]; 
     }
     strSize = tmpSize;
 }
@@ -60,8 +60,7 @@ char& MyString::at(std::size_t pos)
 
 const char& MyString::at(std::size_t pos) const
 {
-    //
-    if(pos<strSize)
+    if(pos<strSize-1) //не давам достъп до '\0' 
     {
         return string[pos];
     }

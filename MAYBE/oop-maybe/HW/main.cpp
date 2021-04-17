@@ -4,8 +4,6 @@
 
 const std::size_t MAX = 50;
 
-enum Menu{Add = 1, Remove = 2, Print = 3, Exit = 4};
-
 void addVehicle(VehicleAllocator* allocator, Garage* g);
 void removeVehicle(Garage* g);
 const void printGarage(Garage* g);
@@ -25,10 +23,10 @@ int main()
     Garage gar(input);
     input = 0;
   
-    //Menu option; 
+    //Menu
     do
     {
-        std::cout<<"Choose an option:\n"
+        std::cout<<"\nChoose an option:\n"
                 << "Add Vehicle - 1\n"
                 << "Remove Vehicle - 2\n"
                 << "Print the Garage - 3\n"
@@ -37,7 +35,7 @@ int main()
         {
             std::cin.clear(); 
             std:: cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
-            std::cout << "Please, choose from:\n"
+            std::cout << "\nPlease, choose from:\n"
                       << "Add Vehicle - 1\n"
                       << "Remove Vehicle - 2\n"
                       << "Print the Garage - 3\n"
@@ -63,7 +61,14 @@ int main()
             break;
 
         case 3:
-            printGarage(&gar);
+            try
+            {
+                printGarage(&gar);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            } 
             break;
 
         default:
@@ -133,10 +138,10 @@ const void print(const char* cstring)
     std::cout<<std::endl;
 }
 
-//Много благодаря на Станимир Петров за насоките, които ми даде :) 
+//Много благодаря на Станимир Петров :) 
 
 //This was my idea for the user input verification. However, I found it annoying that 
-//you have to restart the program afrer every wrong input
+//you have to restart the program after every wrong input
     // try
     // {
     //     std::cin >> input;
