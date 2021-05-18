@@ -2,6 +2,7 @@
 #define REGISTRATION_H
 
 #include "Verify.hpp"
+#include <string>
 
 class Registration
 {
@@ -9,9 +10,8 @@ private:
     std::string registration;
 
 public:
-    Registration(const std::string reg) 
-    {
-    }
+    Registration(std::string reg);
+    std::string getReg();
   
 };
 

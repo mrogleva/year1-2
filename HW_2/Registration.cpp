@@ -1,6 +1,6 @@
 #include "Registration.hpp"
 
-Registration::Registration(const std::string reg)
+Registration::Registration(std::string reg)
 {
     if(reg.length() == 7)
         {
@@ -52,8 +52,13 @@ Registration::Registration(const std::string reg)
                 throw std::runtime_error("This registration is not valid");
             }
         }
-        else 
+        if(reg.length() != 8 && reg.length() != 7)
         {
             throw std::runtime_error("This registration is not valid");
         }
+}
+
+std::string Registration::getReg()
+{
+    return registration;
 }
