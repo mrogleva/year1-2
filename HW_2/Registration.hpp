@@ -2,7 +2,6 @@
 #define REGISTRATION_H
 
 #include "Verify.hpp"
-#include <string>
 
 class Registration
 {
@@ -11,8 +10,7 @@ private:
 
 public:
     Registration(std::string reg);
-    std::string getReg();
-  
+    std::string getReg(); //used only for the unit tests
 };
 
 

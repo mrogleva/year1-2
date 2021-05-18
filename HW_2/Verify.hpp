@@ -2,6 +2,7 @@
 #define VERIFY_H
 
 #include <iostream>
+#include <string>
 
 class Verify
 {
@@ -11,6 +12,8 @@ public:
     static bool isLowercase(const char a);
 
     static bool isNumber(const char a);
+
+    static bool isValidRegistration(std::string reg);
 };
 
 
