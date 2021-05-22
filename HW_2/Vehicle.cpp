@@ -1,6 +1,12 @@
 #include "Vehicle.hpp"
 
-Vehicle::Vehicle(Registration registration, std::string description) : Registration(registration)
+Vehicle::Vehicle(Registration registration, std::string description) : Registration(registration.getReg())
+{
+    this->description = description;
+    ownerId = 0;
+}
+
+Vehicle::Vehicle(std::string registration, std::string description) : Registration(registration)
 {
     this->description = description;
     ownerId = 0;
