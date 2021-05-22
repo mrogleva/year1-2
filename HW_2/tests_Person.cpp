@@ -28,13 +28,13 @@ TEST_CASE( "Working with vehicles", "[Person]" )
         REQUIRE(test.addVehicle(veh1) == 1); //add another vehicle
         REQUIRE(test.numberOfVehicles() == 2);
 
-        REQUIRE(test.getVehicle(0).getReg() == reg.getReg()); //get veh
-        REQUIRE(test.getVehicle(1).getReg() == reg1.getReg());
+        REQUIRE(test.getVehicle(0)->getReg() == reg.getReg()); //get veh
+        REQUIRE(test.getVehicle(1)->getReg() == reg1.getReg());
         REQUIRE_THROWS_AS(test.getVehicle(2), std::out_of_range);
 
         REQUIRE(test.releaseVehicle(reg) == 1); //remove veh
         REQUIRE(test.numberOfVehicles() == 1);
-        REQUIRE(test.getVehicle(0).getReg() == reg1.getReg());
+        REQUIRE(test.getVehicle(0)->getReg() == reg1.getReg());
 
         REQUIRE(test.releaseVehicle(reg) == 0); //remove last veh
         REQUIRE(test.releaseVehicle(reg1) == 1);

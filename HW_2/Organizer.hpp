@@ -1,10 +1,7 @@
 #ifndef ORGANIZER_H
 #define ORGANIZER_H
 
-#include <vector>
-#include "Registration.hpp"
 #include "Person.hpp"
-#include "Vehicle.hpp"
 
 class Organizer //singleton
 {
@@ -15,8 +12,8 @@ private:
     Organizer(); 
     
 public:
-    Organizer(const Organizer& other) = delete; //
-    void operator=(const Organizer& other) = delete; //
+    Organizer(const Organizer& other) = delete;
+    void operator=(const Organizer& other) = delete;
     static Organizer& getInstance();
 
     //проверки тук!
