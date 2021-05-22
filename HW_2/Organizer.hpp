@@ -17,20 +17,19 @@ public:
     static Organizer& getInstance();
 
     //проверки тук!
-    void addPerson(Person& person); //should check if the id is taken before adding a person!
-    void addVehicle(Registration registration, std::string description); //should check if the reg is taken!
+    void addVehicle(std::string registration, std::string description); //should check if the reg is taken!
+    void addPerson(std::string name, unsigned int id); //should check if the id is taken before adding the person!
+    void aquire(unsigned int id, Registration registration); //griji se za Vehicle i Person 
     void release(unsigned int id, Registration registration); //griji se za Vehicle i Person
-    void aquire(unsigned int id, Registration registration); //griji se za Vehicle i Person
     
-    void remove(unsigned int id); //raboti s vector people
-    friend void remove(Registration registration); //raboti s vector vehicles
+    void remove(unsigned int id); //removes a person
+    friend void remove(Registration registration); //removes a vehicle
+    //на горно ниво да се преценява коя ф-я да се се викне ?
+    
     //Ако се опитва да се премахне кола, която има собственик или собственик, 
     // който притежава коли, да се изведе съобщение и да се попита потребителят дали 
     // е сигурен. Ако той потвърди, обектът да се изтрие, но да се коригират останалите, 
     // които са свързани с него.
-
 };
-
-
 
 #endif

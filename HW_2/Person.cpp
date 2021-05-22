@@ -58,7 +58,7 @@ bool Person::releaseVehicle(Registration registration)
             delete vehicles[i];
             vehicles[i] = nullptr;
             vehicles.erase(vehicles.begin()+i);
-            return true;
+            return true; 
         }
     }
     return false;
