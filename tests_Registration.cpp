@@ -23,7 +23,8 @@ TEST_CASE( "Verifications check", "[Registration]" )
         }
         catch(const std::exception& e)
         {
-            REQUIRE(e.what() == "This registration is not valid");
+            REQUIRE(e.what() == "This registration is not valid"); //I do it this way, because the exception should be 
+            //thrown on construction
         }
     }
     SECTION("should throw an exception")

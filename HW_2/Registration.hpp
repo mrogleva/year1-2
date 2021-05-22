@@ -10,7 +10,7 @@ private:
 
 public:
     Registration(std::string reg);
-    std::string getReg(); //used only for the unit tests
+    std::string getReg() const; 
 };
 
 

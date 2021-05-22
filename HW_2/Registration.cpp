@@ -12,7 +12,7 @@ Registration::Registration(std::string reg)
     }
 }
 
-std::string Registration::getReg()
+std::string Registration::getReg() const
 {
     return registration;
 }
