@@ -39,28 +39,30 @@ TEST_CASE( "Organizer tests", "[Organizer]" )
         REQUIRE(org.getVehicleReg(2) == "CA1234MP");
         REQUIRE(org.getVehicleReg(3) == "B2222BB");
     }
-    SECTION("aquire") //note that this aquire function does not perform release if the vehicle has another owner
+    SECTION("acquire") 
     {
-        org.aquire(12, "XY1234AB");
+        org.acquire(12, "XY1234AB");
 
         REQUIRE(org.getPerson(12)->numberOfVehicles() == 1);
         REQUIRE(org.getPerson(12)->getVehicle(0)->getReg() == "XY1234AB");
         REQUIRE(org.getVehicle("XY1234AB").getOwnerId() == 12);
 
-        org.aquire(12, "AB1234CD");
+        org.acquire(12, "AB1234CD");
 
         REQUIRE(org.getPerson(12)->numberOfVehicles() == 2);
         REQUIRE(org.getPerson(12)->getVehicle(1)->getReg() == "AB1234CD");
         REQUIRE(org.getVehicle("AB1234CD").getOwnerId() == 12);
 
-        org.aquire(45, "CA1234MP");
+        org.acquire(45, "XY1234AB");
         REQUIRE(org.getPerson(45)->numberOfVehicles() == 1);
+        REQUIRE(org.getPerson(12)->numberOfVehicles() == 1);
+        REQUIRE(org.getVehicle("XY1234AB").getOwnerId() == 45);
+        REQUIRE(org.getPerson(12)->getVehicle(0)->getReg() == "AB1234CD");
     }
     SECTION("release")
     {
-        org.release(12, "XY1234AB");
-        REQUIRE(org.getPerson(12)->numberOfVehicles() == 1);
-        REQUIRE(org.getPerson(12)->getVehicle(0)->getReg() == "AB1234CD");
+        org.release(45, "XY1234AB");
+        REQUIRE(org.getPerson(45)->numberOfVehicles() == 0);
         REQUIRE(org.getVehicle("XY1234AB").getOwnerId() == 0);
     }
     SECTION("remove person")

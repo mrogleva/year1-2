@@ -9,5 +9,6 @@ Try catch:
     make the first constructor use the copy constr of Registration
 
 #Registration 
-    ADD copy constructor!
-    might add operator =
+
+#RENAME ORGANIZER
+    DataOrganization ili DataOrg ili nsh takova

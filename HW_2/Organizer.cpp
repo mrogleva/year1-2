@@ -10,31 +10,31 @@ Organizer& Organizer::getInstance()
     return instance;
 }
 
-void Organizer::addVehicle(std::string registration, std::string description) //try catch
+void Organizer::addVehicle(std::string registration, std::string description) 
 {
-    Registration reg(registration); //could throw
+    Registration reg(registration); 
     for(std::size_t i = 0; i<vehicles.size(); ++i) 
     {
-        if(vehicles[i].getReg() == registration) //could throw
+        if(vehicles[i].getReg() == registration) 
         {
             throw std::runtime_error("A vehicle with that registration already exists.");
         }
     }
     Vehicle temp(reg, description);
     vehicles.push_back(temp);
-    if(vehicles.back().getReg() != temp.getReg())   //could throw
+    if(vehicles.back().getReg() != temp.getReg())  
     {
         throw std::runtime_error("Memory error. Nothing was added.");
     }
 }
 
-void Organizer::addPerson(std::string name, unsigned int id)   //try catch
+void Organizer::addPerson(std::string name, unsigned int id)   
 {
     if(id > 0) //0 is not a valid ID
     {
         for(std::size_t i = 0; i<people.size(); ++i) 
         {
-            if(people[i].getId() == id) //could throw
+            if(people[i].getId() == id) 
             {
                 throw std::runtime_error("A person with that ID already exists.");
             }
@@ -48,7 +48,7 @@ void Organizer::addPerson(std::string name, unsigned int id)   //try catch
     }
 }
 
-void Organizer::aquire(unsigned int id, std::string registration)
+void Organizer::acquire(unsigned int id, std::string registration)
 {
     std::size_t p = 0;
     bool flagP = 0;
@@ -89,6 +89,11 @@ void Organizer::aquire(unsigned int id, std::string registration)
     if(!flagV)
     {
         throw std::runtime_error("This vehicle does not exist.");
+    }
+
+    if(vehicles[v].getOwnerId())
+    {
+        release(vehicles[v].getOwnerId(), registration);
     }
 
     vehicles[v].addOwner(id);
@@ -145,7 +150,7 @@ void Organizer::remove(unsigned int id)
     }
     if(!flag)
     {
-        throw std::runtime_error("Error.");
+        throw std::runtime_error("This person does not exist.");
     }
 }
 
@@ -168,7 +173,7 @@ void Organizer::remove(std::string registration)
     }
     if(!flag)
     {
-        throw std::runtime_error("Error.");
+        throw std::runtime_error("This vehicle does not exist.");
     }
 }
 

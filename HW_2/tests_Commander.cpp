@@ -14,7 +14,7 @@ TEST_CASE( "Commander tests", "[Commander]" )
         REQUIRE(com.splitWords("  ") == "");
         REQUIRE(com.splitWords("\"a\"") == "a");
         REQUIRE(com.splitWords(" \"a a a \" ") == "a a a ");
-        REQUIRE(com.splitWords("\"\"") == "");
+        REQUIRE(com.splitWords(" 12 3") == "12");
     }
 
 }

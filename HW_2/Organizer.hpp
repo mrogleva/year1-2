@@ -19,7 +19,7 @@ public:
     //проверки тук!
     void addVehicle(std::string registration, std::string description); //should check if the reg is taken!
     void addPerson(std::string name, unsigned int id); //should check if the id is taken before adding the person!
-    void aquire(unsigned int id, std::string registration); //griji se za Vehicle i Person 
+    void acquire(unsigned int id, std::string registration); //griji se za Vehicle i Person 
     void release(unsigned int id, std::string registration); //griji se za Vehicle i Person
     
     void remove(unsigned int id); //removes a person 
