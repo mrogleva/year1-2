@@ -21,7 +21,7 @@ public:
     std::string getName() const;
     unsigned getId() const;
     std::size_t numberOfVehicles() const;
-    Vehicle* getVehicle(std::size_t pos) const;
+    Vehicle* getVehicle(std::size_t pos) const; // !doesn't return a pointer to prevent unwanted changes to the object
 
     bool addVehicle(Vehicle& veh); //bez proverki tuk; na gornoto nivo! //добавя КОПИЕ във вектора на person //vryshta dali e bilo usp
     bool releaseVehicle(Registration registration); //първо проверява дали има такова във вектора /връща дали операцията е 

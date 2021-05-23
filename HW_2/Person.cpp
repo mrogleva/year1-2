@@ -39,6 +39,7 @@ bool Person::addVehicle(Vehicle& veh)
     vehicles.push_back(temp);
     if(vehicles.back()->getReg() == veh.getReg())
     {
+        temp = nullptr;
         return true;
     }
     else
@@ -70,10 +71,13 @@ Person::~Person()
     {
         delete vehicles[i];
         vehicles[i] = nullptr;
+        std::cout<<"DESTR PERSON\n";
     }
 }
 
 Person::Person(const Person& other)
 {
-
+    name = other.getName();
+    id = other.getId();
+    vehicles = other.vehicles;
 }
