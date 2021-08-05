@@ -13,7 +13,7 @@ class Singleton {
 	*/
 public:
 	Singleton(const Singleton&) = delete; //при всеки опит функцията да бъде извикана ще даде грешка
-	Singleton& operator =(const Singleon&) = delete;//availiable in c++ 11
+	Singleton& operator =(const Singleton&) = delete;//availiable in c++ 11
 	
 
 	static Singleton& instance()
@@ -33,7 +33,7 @@ int main()
 {
 	Singleton::instance().print();
 
-	Singleton& ref = Singleton.instance();
+	Singleton& ref = Singleton::instance();
 	ref.print();
 
 	
