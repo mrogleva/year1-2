@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 // DELETE THE ENCRYPTED MESSAGES and sizes array AND TABLE
 
@@ -8,6 +9,7 @@ const size_t MAX_MSG_SIZE = 1000;
 char*** createTable(size_t rows);
 char* encrypt(char* original, char*** table, std::size_t rows, int* sizes);
     // returns a pointer to the encrypted message
+char* decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes);
 void copyString(char* from, char* to, std::size_t size); //TODO
 int* tableFill(char*** table, size_t rows); //takes the console input and
     //returns a pointer to an array, which stores the sizes of each 
@@ -16,6 +18,8 @@ void printTable(char*** table, size_t rows, int* sizes);
 char** messagesInput(std::size_t cnt);
 void printMessages(char** msgs, std::size_t cnt);
 void clearTable(char*** table, std::size_t takenRows);
+void lengthSort(int* values, int* tosort, unsigned size);
+unsigned maxFrom(int* array, unsigned from, unsigned to);
 
 int main()
 {
@@ -57,7 +61,33 @@ int main()
             delete[] sizes; ////////////////////
             return 1;
         }
-    
+        
+        std::cout<<"How many messages would you like to decrypt?"<<std::endl;
+        std::size_t enc;
+        if(std::cin>>enc)
+        {
+            char** encrypted = messagesInput(enc);
+            if(!encrypted)
+            {
+                clearTable(table, rows);
+                delete[] sizes; ////////////////////
+                return 1;
+            }
+            // printMessages(messages, msgs);
+            for(std::size_t i = 0; i < msgs; ++i)
+            {
+                // char* temp = encrypt(messages[i], table, rows, sizes);
+                // printMessages(&temp, 1);
+                // delete[] temp;
+            }
+        }
+        else
+        {
+            std::cout<<"Please enter a positive number.";
+            clearTable(table, rows);
+            delete[] sizes; ////////////////////
+            return 1;
+        }
     }
     else
     {
@@ -292,3 +322,84 @@ void printMessages(char** msgs, std::size_t cnt)
         std::cout<<std::endl;
     }
 }
+
+char* decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
+{
+    std::size_t encSize = 0;
+    while(encrypted[encSize])
+    {
+        encSize += 1;
+    }
+
+    int* order = new(std::nothrow) int[rows];
+    if(!order)
+    {
+        return nullptr;
+    }
+    for(std::size_t i = 0; i < rows; ++i)
+    {
+        order[i] = i;
+    }
+    lengthSort(sizes, order, rows);
+    //по реда, указан в помощния масив, започваме да търсим съвпадения в низа
+   
+    char tempOriginal[encSize];
+    char encCopy[encSize];
+    char* found = encCopy;
+    for(std::size_t i = 0; i < encSize; ++i)
+    {
+        encCopy[i] = encrypted[i];
+    }
+    for(std::size_t i = 0; i < rows; ++i)
+    {
+        while(found)
+        {
+            found = strstr(encCopy, table[order[i]][1]);
+            if(found)
+            {
+                for(std::size_t j = 0; j < sizes[order[i]]; ++j)
+                {
+                    found[j] = '\0';
+                }
+                tempOriginal[found - encCopy] = table[order[i]][0][0]; ///////
+            }
+        }
+    }
+    for(std::size_t i = 0; i < encSize; ++i)
+    {
+        if(encCopy[i])
+        {
+            tempOriginal[i] = encCopy[i];
+        }
+    }
+    
+
+
+
+    delete[] order;
+}
+
+unsigned maxFrom(int* array, unsigned from, unsigned to)
+{
+    unsigned max = from;
+    for (unsigned i = from + 1; i < to; ++i) 
+    {
+        if (array[i] > array[max])
+        {
+            max = i;
+        }
+    }
+    return max;
+}
+
+void lengthSort(int* values, int* tosort, unsigned size)
+{
+    for(unsigned i = 0; i < size-1; ++i) 
+    {
+        int m = maxFrom(values, i, size);
+        int temp = tosort[i];
+        tosort[i] = tosort[m];
+        tosort[m] = temp;
+    }
+}
+
