@@ -1,25 +1,31 @@
 #include <iostream>
 #include <cstring>
 
-// DELETE THE ENCRYPTED MESSAGES and sizes array AND TABLE
+// MEMORY LEAK при грешен вход за table
+// How many letters would you like to encrypt?2
+// a dd
+// v
+// free(): double free detected in tcache 2
 
-const size_t MAX_STRING_SIZE = 10;
+const size_t MAX_STRING_SIZE = 100;
 const size_t MAX_MSG_SIZE = 1000;
 
 char*** createTable(size_t rows);
 char* encrypt(char* original, char*** table, std::size_t rows, int* sizes);
-    // returns a pointer to the encrypted message
-char* decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes);
+// returns a pointer to the encrypted message
+
+bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes);
 void copyString(char* from, char* to, std::size_t size); //TODO
 int* tableFill(char*** table, size_t rows); //takes the console input and
     //returns a pointer to an array, which stores the sizes of each 
-    // criptic sequence, without the terminating character
+// criptic sequence, without the terminating character
 void printTable(char*** table, size_t rows, int* sizes);
 char** messagesInput(std::size_t cnt);
 void printMessages(char** msgs, std::size_t cnt);
 void clearTable(char*** table, std::size_t takenRows);
 void lengthSort(int* values, int* tosort, unsigned size);
 unsigned maxFrom(int* array, unsigned from, unsigned to);
+char* myStrstr(char* haystack, std::size_t hSize, char* needle);
 
 int main()
 {
@@ -73,13 +79,14 @@ int main()
                 delete[] sizes; ////////////////////
                 return 1;
             }
-            // printMessages(messages, msgs);
-            for(std::size_t i = 0; i < msgs; ++i)
+            // printMessages(encrypted, msgs);
+            for(std::size_t i = 0; i < enc; ++i)
             {
-                // char* temp = encrypt(messages[i], table, rows, sizes);
-                // printMessages(&temp, 1);
-                // delete[] temp;
+                decrypt(encrypted[i], table, rows, sizes);
             }
+
+            clearTable(table, rows);
+            delete[] sizes;
         }
         else
         {
@@ -183,12 +190,12 @@ char* encrypt(char* original, char*** table, std::size_t rows, int* sizes)
 
 void clearTable(char*** table, std::size_t takenRows)
 {
-    for(std::size_t i = 0; i<takenRows; ++i)
-    {
-        delete table[i][0];
-        delete[] table[i][1];
-    }
-    // delete[] table[0]; 
+    // for(std::size_t i = 0; i<takenRows; ++i)
+    // {
+    //     delete table[i][0];
+    //     delete[] table[i][1];
+    // }
+    delete[] table[0]; 
     delete[] table;
 }
 
@@ -323,7 +330,7 @@ void printMessages(char** msgs, std::size_t cnt)
     }
 }
 
-char* decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
+bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
 {
     std::size_t encSize = 0;
     while(encrypted[encSize])
@@ -331,30 +338,36 @@ char* decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
         encSize += 1;
     }
 
-    int* order = new(std::nothrow) int[rows];
+    int* order = new(std::nothrow) int[rows]; //съхранява индексите на редовете в таблицата
     if(!order)
     {
-        return nullptr;
+        std::cout<<"Memory error.";
+        return false;
     }
     for(std::size_t i = 0; i < rows; ++i)
     {
         order[i] = i;
     }
     lengthSort(sizes, order, rows);
-    //по реда, указан в помощния масив, започваме да търсим съвпадения в низа
-   
-    char tempOriginal[encSize];
-    char encCopy[encSize];
-    char* found = encCopy;
+    //по реда, указан в order, започваме да търсим съвпадения в копие и да ги махаме
+
+    char tempOriginal[encSize + 1]; //оригиналният текст няма как да е по-дълъг
+    for(std::size_t i = 0; i < encSize; ++i)
+    {
+        tempOriginal[i] = '\0';
+    }
+    char encCopy[encSize + 1];  //копие на низа, в което ще трием вече намерените изрази
     for(std::size_t i = 0; i < encSize; ++i)
     {
         encCopy[i] = encrypted[i];
     }
+
+    char* found = encCopy; //указател, к' ще сочи началото на намерения израз
     for(std::size_t i = 0; i < rows; ++i)
     {
-        while(found)
+        while(found) 
         {
-            found = strstr(encCopy, table[order[i]][1]);
+            found = myStrstr(encCopy, encSize, table[order[i]][1]);
             if(found)
             {
                 for(std::size_t j = 0; j < sizes[order[i]]; ++j)
@@ -364,19 +377,43 @@ char* decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
                 tempOriginal[found - encCopy] = table[order[i]][0][0]; ///////
             }
         }
+        found = encCopy;
     }
     for(std::size_t i = 0; i < encSize; ++i)
     {
         if(encCopy[i])
         {
-            tempOriginal[i] = encCopy[i];
+            for(std::size_t j = 0; j < rows; ++j)
+            {
+                if(encCopy[i] == table[j][0][0])
+                {
+                    delete[] order;
+                    std::cout<<"Bad string"<<std::endl;
+                    return false;
+                    //ако символ не е бил променен, а фигурира в 1 кол на таблицата,
+                    //имаме противоречие 
+                }
+            }
         }
     }
-    
-
-
-
+    for(std::size_t i = 0; i < encSize; ++i)
+    {
+        if(encCopy[i])
+        {
+            tempOriginal[i] = encCopy[i]; 
+            //събираме на едно място променените и запазените символи
+        }
+    }
+    for(std::size_t i = 0; i < encSize; ++i)
+    {
+        if(tempOriginal[i])
+        {
+            std::cout<<tempOriginal[i];
+        }
+    }
+    std::cout<<std::endl;
     delete[] order;
+    return true;
 }
 
 unsigned maxFrom(int* array, unsigned from, unsigned to)
@@ -403,3 +440,45 @@ void lengthSort(int* values, int* tosort, unsigned size)
     }
 }
 
+char* myStrstr(char* haystack, std::size_t hSize, char* needle)
+{
+    if(!needle || needle[0] == '\0')
+    {
+        return haystack;
+    }
+    std::size_t nSize = 0;
+    while(needle[nSize])
+    {
+        nSize += 1;
+    }
+    if(nSize > hSize)
+    {
+        return nullptr;
+    }
+    
+    std::size_t i = 0, j = 0, cnt = 0, move = 0;
+    while(i < hSize && j < nSize)
+    {
+        if(haystack[i] == needle[j])
+        {
+            i += 1;
+            j += 1;
+            cnt += 1;
+        }
+        else
+        {
+            move += 1; //отместване
+            i = move;
+            j = 0;
+            cnt = 0;
+        }
+    }
+    if(cnt == nSize)
+    {
+        return &haystack[i-cnt];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
