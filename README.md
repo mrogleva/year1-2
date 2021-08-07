@@ -1,14 +1,18 @@
-#TODO
-Try catch: 
-    void addVehicle(std::string registration, std::string description); //should check if the reg is taken!
-    void addPerson(std::string name, unsigned int id);
-    void remove(unsigned int id); //removes a person
-    friend void remove(Registration registration); //removes a vehicle
+8
+i ala
+l bala
+d cana
+e h
+t disco
+o electro
+c pro
+a some
 
-#Vehicle
-    make the first constructor use the copy constr of Registration
+1
+I l0ve to code!
+1
+ala somem discoelectroelectro proelectroelectrobala!
 
-#Registration 
+TODO:
+защо на bala вади bi, вместо l 
 
-#RENAME ORGANIZER
-    DataOrganization ili DataOrg ili nsh takova

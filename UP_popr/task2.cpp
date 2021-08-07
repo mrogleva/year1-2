@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 
 // MEMORY LEAK при грешен вход за table
 // How many letters would you like to encrypt?2
@@ -7,7 +6,9 @@
 // v
 // free(): double free detected in tcache 2
 
-const size_t MAX_STRING_SIZE = 100;
+//CLEAR MESSAGES AND ENCRYPTED
+
+const size_t MAX_STRING_SIZE = 10;
 const size_t MAX_MSG_SIZE = 1000;
 
 char*** createTable(size_t rows);
@@ -22,10 +23,12 @@ int* tableFill(char*** table, size_t rows); //takes the console input and
 void printTable(char*** table, size_t rows, int* sizes);
 char** messagesInput(std::size_t cnt);
 void printMessages(char** msgs, std::size_t cnt);
-void clearTable(char*** table, std::size_t takenRows);
 void lengthSort(int* values, int* tosort, unsigned size);
 unsigned maxFrom(int* array, unsigned from, unsigned to);
 char* myStrstr(char* haystack, std::size_t hSize, char* needle);
+
+void clearTable(char*** table, std::size_t takenRows);
+void clearMessages(char** msgs, std::size_t cnt);
 
 int main()
 {
@@ -49,7 +52,8 @@ int main()
             if(!messages)
             {
                 clearTable(table, rows);
-                delete[] sizes; ////////////////////
+                delete[] sizes; 
+                sizes = nullptr;
                 return 1;
             }
             // printMessages(messages, msgs);
@@ -59,12 +63,14 @@ int main()
                 printMessages(&temp, 1);
                 delete[] temp;
             }
+            clearMessages(messages, msgs);
         }
         else
         {
             std::cout<<"Please enter a positive number.";
             clearTable(table, rows);
-            delete[] sizes; ////////////////////
+            delete[] sizes; 
+            sizes = nullptr;
             return 1;
         }
         
@@ -76,7 +82,8 @@ int main()
             if(!encrypted)
             {
                 clearTable(table, rows);
-                delete[] sizes; ////////////////////
+                delete[] sizes; 
+                sizes = nullptr;
                 return 1;
             }
             // printMessages(encrypted, msgs);
@@ -84,7 +91,7 @@ int main()
             {
                 decrypt(encrypted[i], table, rows, sizes);
             }
-
+            clearMessages(encrypted, enc);
             clearTable(table, rows);
             delete[] sizes;
         }
@@ -92,7 +99,7 @@ int main()
         {
             std::cout<<"Please enter a positive number.";
             clearTable(table, rows);
-            delete[] sizes; ////////////////////
+            delete[] sizes;
             return 1;
         }
     }
@@ -149,7 +156,7 @@ char* encrypt(char* original, char*** table, std::size_t rows, int* sizes)
     {
         for(std::size_t j = 0; j<rows; ++j)
         {
-            if(original[i] == table[j][0][0])
+            if(tolower(original[i]) == table[j][0][0])
             {
                 encSize += sizes[j] - 1;
                 help[i] = j;
@@ -170,7 +177,7 @@ char* encrypt(char* original, char*** table, std::size_t rows, int* sizes)
     {
         if(help[i] == -1)
         {
-            encrypted[index] = original[i];
+            encrypted[index] = tolower(original[i]);
             index += 1;
         }
         if(help[i] != -1) 
@@ -188,16 +195,27 @@ char* encrypt(char* original, char*** table, std::size_t rows, int* sizes)
     return encrypted;
 }   
 
-void clearTable(char*** table, std::size_t takenRows)
+void clearTable(char*** table, std::size_t filled)
 {
-    // for(std::size_t i = 0; i<takenRows; ++i)
-    // {
-    //     delete table[i][0];
-    //     delete[] table[i][1];
-    // }
-    delete[] table[0]; 
+    for(std::size_t i = 0; i<filled; ++i)
+    {
+        delete table[i][0];
+        delete[] table[i][1];
+    }
+    // delete[] table[0]; 
     delete[] table;
+    table = nullptr;
 }
+
+void clearMessages(char** msgs, std::size_t cnt)
+ {
+    for(std::size_t i = 0; i < cnt; ++i)
+    {
+        delete[] msgs[i];
+    }
+    delete[] msgs;
+    msgs = nullptr;
+ }
 
 int* tableFill(char*** table, size_t rows)
 {
@@ -221,7 +239,7 @@ int* tableFill(char*** table, size_t rows)
             {
                 for(std::size_t j = 0; j < i; ++j)
                 {
-                    if(buffer[0] == table[j][0][0])
+                    if(tolower(buffer[0]) == table[j][0][0])
                     {
                         delete[] sizes;
                         std::cout<<"Every letter should have a unique encryption.";
@@ -237,19 +255,19 @@ int* tableFill(char*** table, size_t rows)
                 std::cout<<"Incorrect input.";
                 return nullptr;
             }
-            tempChar[0] = buffer[0];
+            tempChar[0] = tolower(buffer[0]);
             table[i][0] = tempChar;
 
-            char* crypt = new(std::nothrow) char[len - 1]; //////////
+            char* crypt = new(std::nothrow) char[len - 1]; 
             if(!crypt)
             {
                 delete[] sizes;
-                delete[] tempChar;
+                delete tempChar;
                 return nullptr;
             }
-            for(std::size_t j = 2; j < len + 1; ++j)/////////////
+            for(std::size_t j = 2; j < len + 1; ++j)
             {
-                crypt[j-2] = buffer[j];
+                crypt[j-2] = tolower(buffer[j]);
             }
             table[i][1] = crypt;
             sizes[i] = len - 2;
@@ -257,7 +275,6 @@ int* tableFill(char*** table, size_t rows)
         }
         else
         {
-            clearTable(table, filled);
             delete[] sizes;
             std::cout<<"Incorrect input.";
             return nullptr;
@@ -289,6 +306,7 @@ char** messagesInput(std::size_t cnt)
     }
     char buffer[MAX_MSG_SIZE + 1];
     std::cout<<"Please enter the messages separated with a new line:"<<std::endl;
+    std::size_t filled = 0;
     for(std::size_t i = 0; i < cnt; ++i)
     {
         std::cin.ignore(10, '\n');
@@ -301,7 +319,7 @@ char** messagesInput(std::size_t cnt)
         char* tempMsg = new(std::nothrow) char[len + 1];
         if(!tempMsg)
         {
-            delete[] messages;
+            clearMessages(messages, filled);
             return nullptr;
         }
         for(std::size_t j = 0; j < len + 1; ++j) //+1 is to copy the term char as well
@@ -309,6 +327,7 @@ char** messagesInput(std::size_t cnt)
             tempMsg[j] = buffer[j];
         }
         messages[i] = tempMsg;
+        filled += 1;
     }
     return messages;
 }
@@ -349,7 +368,7 @@ bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
         order[i] = i;
     }
     lengthSort(sizes, order, rows);
-    //по реда, указан в order, започваме да търсим съвпадения в копие и да ги махаме
+    //сортираме дължините в помощния order и започваме да търсим съвпадения в копие и да ги махаме
 
     char tempOriginal[encSize + 1]; //оригиналният текст няма как да е по-дълъг
     for(std::size_t i = 0; i < encSize; ++i)
@@ -359,7 +378,7 @@ bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
     char encCopy[encSize + 1];  //копие на низа, в което ще трием вече намерените изрази
     for(std::size_t i = 0; i < encSize; ++i)
     {
-        encCopy[i] = encrypted[i];
+        encCopy[i] = tolower(encrypted[i]);
     }
 
     char* found = encCopy; //указател, к' ще сочи началото на намерения израз
@@ -374,7 +393,7 @@ bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
                 {
                     found[j] = '\0';
                 }
-                tempOriginal[found - encCopy] = table[order[i]][0][0]; ///////
+                tempOriginal[found - encCopy] = table[order[i]][0][0];
             }
         }
         found = encCopy;

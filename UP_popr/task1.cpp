@@ -7,12 +7,12 @@ const unsigned MAX_INPUT_SIZE = 10;
 bool smaller(int numA, int numB);
 unsigned count(int n);
 void sort(int* array, std::size_t size);
-unsigned maxFrom(int array[], unsigned from, unsigned to);
-std::size_t removeDuplicates(int* array, std::size_t size); //returns the size of the new array
+unsigned maxFrom(int array[], unsigned from, unsigned to); //returns the index of the max element
+bool* flagDuplicates(int* array, std::size_t size); 
 
 int main()
 {
-    std::cout<<"Please enter how many numbers would you like to sort.";
+    std::cout<<"Please enter how many numbers would you like to sort."<<std::endl;
     std::size_t numCnt;
     std::cin>>numCnt;
     int* arr = new(std::nothrow) int[numCnt];
@@ -21,7 +21,7 @@ int main()
         std::cout<<"Memory error.";
         return 1;
     }
-    std::cout<<"Please enter the numbers:";
+    std::cout<<"Please enter the numbers:"<<std::endl;
     int number;
     for(unsigned i = 0; i<numCnt; ++i)
     {
@@ -37,20 +37,31 @@ int main()
     }
 
     sort(arr, numCnt);
-    std::cout<<"Sorted array:\n";
+    std::cout<<"Sorted array:"<<std::endl;
     for(std::size_t i = 0; i < numCnt; ++i)
     {
         std::cout<<arr[i]<<" ";
     }
 
-    std::size_t nCnt = removeDuplicates(arr, numCnt);
-    std::cout<<"\nRemoved "<<numCnt - nCnt<<" duplicates:\n";
-    for(std::size_t i = 0; i < nCnt; ++i)
+    bool* duplicates = flagDuplicates(arr, numCnt);
+    if(duplicates)
     {
-        std::cout<<arr[i]<<" ";
+        std::cout<<std::endl<<"Removed duplicates:"<<std::endl;
+        for(std::size_t i = 0; i < numCnt; ++i)
+        {
+            if(!duplicates[i])
+            {
+                std::cout<<arr[i]<<" ";
+            }
+        }
+        delete[] duplicates;
+        duplicates = nullptr;
     }
-
-
+    else
+    {
+        std::cout<<"Unable to remove duplicates due to memory error.";
+    }
+    
     delete[] arr;
     arr = nullptr;
 
@@ -111,36 +122,24 @@ unsigned maxFrom(int array[], unsigned from, unsigned to)
     return max;
 }
 
-std::size_t removeDuplicates(int* array, std::size_t size)
+bool* flagDuplicates(int* array, std::size_t size)
 {
-    std::size_t removed = 0;
-    for(std::size_t i = 0; i<size-1-removed; ++i) 
+    bool* duplicates = new(std::nothrow) bool[size];
+    if(!duplicates)
+    {
+        return nullptr;
+    }
+
+    for(std::size_t i = 0; i<size; ++i)
+    {
+        duplicates[i] = false;
+    }
+    for(std::size_t i = 0; i<size-1; ++i) 
     {
         if(array[i] == array[i+1])
         {
-            for(std::size_t j = i+1; j<size-1; ++j) //removes the duplicate and shifts left
-            {
-                array[j] = array[j+1];
-            }
-            removed += 1;
+            duplicates[i+1] = true;
         }
     }
-    if (removed != 0)
-    {
-        int* temp = new(std::nothrow) int[size-removed];
-        if(!temp)
-        {
-            std::cout<<"Unable to remove duplicates due to memory error.";
-            return size;
-        }
-        for(std::size_t i = 0; i<size-removed; ++i)
-        {
-            temp[i] = array[i];
-        }
-        delete[] array;
-        array = temp;
-        temp = nullptr;
-        return size-removed;
-    }
-    return size;
+    return duplicates;
 }
