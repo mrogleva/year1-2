@@ -12,6 +12,7 @@ protected:
 	void print();
 
 public:
+    ~componentList();
     component* getComponent(std::size_t pos);
     std::size_t componentCount();
 	void removeComponent(std::size_t index);

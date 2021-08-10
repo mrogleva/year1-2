@@ -35,3 +35,11 @@ std::size_t componentList::componentCount()
 {
     return components.size();
 }
+
+componentList::~componentList()
+{
+    for(std::size_t i = 0; i < components.size(); ++i)
+    {
+        delete components[i];
+    }
+}

@@ -1,7 +1,6 @@
 #ifndef STORE_BUILDER_H
 #define STORE_BUILDER_H
 
-
 #include <fstream>
 #include "store.hpp"
 #include "RAM.hpp"
@@ -11,7 +10,7 @@
 class store_builder 
 {
 public:
-	static store *buildStore(std::string path);
+	static store* buildStore(std::string path);
 };
 
 #endif

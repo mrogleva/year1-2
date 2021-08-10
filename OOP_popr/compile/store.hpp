@@ -7,6 +7,8 @@ class store : public componentList
 {
 public:
     void add(component *component);
+
+    friend class store_builder;
 };
 
 #endif
