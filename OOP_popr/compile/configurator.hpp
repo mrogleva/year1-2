@@ -9,7 +9,9 @@ class configurator
 {
 private:
     std::vector<configuration*> configurations;
-    configurator();
+    configurator()
+    {
+    }
 
 public:
     configurator(const configurator&) = delete; //при всеки опит функцията да бъде извикана ще даде грешка

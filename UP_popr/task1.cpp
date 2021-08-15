@@ -113,7 +113,7 @@ void sort(int* array, std::size_t size)
 unsigned maxFrom(int array[], unsigned from, unsigned to)
 {
     unsigned max = from;
-    for (unsigned i = from + 1; i < to; ++i) {
+    for(unsigned i = from + 1; i < to; ++i) {
         if (!smaller(array[i], array[max]))
         {
             max = i;

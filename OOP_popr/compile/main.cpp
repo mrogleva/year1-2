@@ -1,3 +1,7 @@
+// Мария Стефанова Роглева КН 1к 3гр 82172
+// Компилатор: gcc
+
+
 #include "configurator.hpp"
 #include "store_builder.hpp"
 
@@ -39,81 +43,88 @@ int main(int argc, const char** argv)
 
     std::string cmd = "";
     requirement req;
-    while (true)
+    try
     {
-        std::cin >> cmd;
-        if (cmd == "finish")
+        while (true)
         {
-            break;
-        }
-        if (cmd == "CPU")
-        {
-            int cores;
-            double corePrice;
-            double frequency;
-            double frequencyPrice;
+            std::cin >> cmd;
+            if (cmd == "finish")
+            {
+                break;
+            }
+            if (cmd == "CPU")
+            {
+                int cores;
+                double corePrice;
+                double frequency;
+                double frequencyPrice;
 
-            std::cin>>cores>>corePrice>>frequency>>frequencyPrice;
-            CPU temp(cmd, cores, frequency, corePrice, frequencyPrice);
-            try
-            {
-                req.add(new CPU(temp));
-                std::cout <<"Parameter added."<< std::endl;
+                std::cin>>cores>>corePrice>>frequency>>frequencyPrice;
+                CPU temp(cmd, cores, frequency, corePrice, frequencyPrice);
+                // try
+                // {
+                    req.add(new CPU(temp));
+                    // std::cout <<"Parameter added."<< std::endl;
+                // }
+                // catch(const std::exception& e)
+                // {
+                //     std::cerr << e.what() << '\n';
+                // }
             }
-            catch(const std::exception& e)
+            else if (cmd == "RAM")
+            {;
+                int gb;
+                double gbPrice;
+                int chip;
+                double chipPrice;
+                int colors;
+                double colorPrice;
+
+                std::cin>>gb>>gbPrice>>chip>>chipPrice>>colors>>colorPrice;
+
+                RAM temp(cmd, gb, gbPrice, chip, chipPrice, colors, colorPrice);
+                // try
+                // {
+                    req.add(new RAM(temp));
+                    // std::cout <<"Parameter added."<< std::endl;
+                // }
+                // catch(const std::exception& e)
+                // {
+                //     std::cerr << e.what() << '\n';
+                // }
+            }
+            else if (cmd == "HDD")
             {
-                std::cerr << e.what() << '\n';
+                int tb;
+                double tbPrice;
+                int readingSpeed;
+                double readingPrice;
+                int writingSpeed;
+                double writingPrice;
+
+                std::cin>>tb>>tbPrice>>readingSpeed>>readingPrice>>writingSpeed>>writingPrice;
+
+                HDD temp(cmd, tb, tbPrice, readingSpeed, readingPrice, writingSpeed, writingPrice);
+                // try
+                // {
+                    req.add(new HDD(temp));
+                //     std::cout <<"Parameter added."<< std::endl;
+                // }
+                // catch(const std::exception& e)
+                // {
+                //     std::cerr << e.what() << '\n';
+                // }
+            }
+            else
+            {
+                std::cerr << "Invalid command. Try again: "
+                            << std::endl;
             }
         }
-        else if (cmd == "RAM")
-        {;
-            int gb;
-            double gbPrice;
-            int chip;
-            double chipPrice;
-            int colors;
-            double colorPrice;
-
-            std::cin>>gb>>gbPrice>>chip>>chipPrice>>colors>>colorPrice;
-
-            RAM temp(cmd, gb, gbPrice, chip, chipPrice, colors, colorPrice);
-            try
-            {
-                req.add(new RAM(temp));
-                std::cout <<"Parameter added."<< std::endl;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-        }
-        else if (cmd == "HDD")
-        {
-            int tb;
-            double tbPrice;
-            int readingSpeed;
-            double readingPrice;
-            int writingSpeed;
-            double writingPrice;
-
-            std::cin>>tb>>tbPrice>>readingSpeed>>readingPrice>>writingSpeed>>writingPrice;
-
-            HDD temp(cmd, tb, tbPrice, readingSpeed, readingPrice, writingSpeed, writingPrice);
-            try
-            {
-                req.add(new HDD(temp));
-                std::cout <<"Parameter added."<< std::endl;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-        }
-        else
-        {
-            std::cerr << "Invalid command. Try again: "
-                        << std::endl;
-        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
     try
     {

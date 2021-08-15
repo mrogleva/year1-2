@@ -202,7 +202,6 @@ void clearTable(char*** table, std::size_t filled)
         delete table[i][0];
         delete[] table[i][1];
     }
-    // delete[] table[0]; 
     delete[] table;
     table = nullptr;
 }
@@ -370,7 +369,13 @@ bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
     lengthSort(sizes, order, rows);
     //сортираме дължините в помощния order и започваме да търсим съвпадения в копие и да ги махаме
 
-    char tempOriginal[encSize + 1]; //оригиналният текст няма как да е по-дълъг
+    //оригиналният текст няма как да е по-дълъг
+    char* tempOriginal = new(std::nothrow) char[encSize + 1];
+    if(!tempOriginal)
+    {
+        std::cout<<"Memory error.";
+        return false;
+    }
     for(std::size_t i = 0; i < encSize; ++i)
     {
         tempOriginal[i] = '\0';
@@ -432,6 +437,7 @@ bool decrypt(char* encrypted, char*** table, std::size_t rows, int* sizes)
     }
     std::cout<<std::endl;
     delete[] order;
+    delete[] tempOriginal;
     return true;
 }
 
