@@ -1,6 +1,6 @@
 #include "client.h"
 
-int MrazMag_client::index = -1;
+int MrazMag_client::indexGen = 0;
 
 MrazMag_client::MrazMag_client(int arriveMinute, int banana, int schweppes, int maxWaitTime)
 {
@@ -9,8 +9,8 @@ MrazMag_client::MrazMag_client(int arriveMinute, int banana, int schweppes, int 
     this->schweppes = schweppes;
     this->maxWaitTime = maxWaitTime;
 
-    index += 1;
-    timeToLeave = arriveMinute + maxWaitTime;
+    this->index = indexGen++;
+    leaveTime = arriveMinute + maxWaitTime;
 }
 
 MrazMag_client::MrazMag_client(Client client) 
