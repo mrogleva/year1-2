@@ -1,38 +1,43 @@
-#include "interface.h"
+#include "implementation.h"
 
-/// This is sample empty implementation you can place your solution here or delete this and include tests to your solution
+void MrazMag::setActionHandler(ActionHandler *handler) 
+{
+    actionHandler = handler;
+}
 
+void MrazMag::init(int workerCount, int startBanana, int startSchweppes) 
+{
+    workersAvailable = workerCount;
+    bananasAvailable = startBanana;
+    schweppesAvailable = startSchweppes;
+}
 
-struct MyStore : Store {
-	ActionHandler *actionHandler = nullptr;
+void MrazMag::addClients(const Client *clients, int count)
+{
+    for(std::size_t i = 0; i < count; ++i)
+    {
+        MrazMag_client temp(clients[i]);
+        allClients.push_back(temp);
+    }
+}
 
-	void setActionHandler(ActionHandler *handler) override {
-		actionHandler = handler;
-	}
+void MrazMag::advanceTo(int minute) 
+{
+    // actionHandler->onWorkerSend(0, ResourceType::banana);
+    // actionHandler->onWorkerBack(0, ResourceType::schweppes);
+    // actionHandler->onClientDepart(0, 0, 1, 2);
+}
 
-	void init(int workerCount, int startBanana, int startSchweppes) override {
-		
-	}
+int MrazMag::getBanana() const
+{
+    return bananasAvailable;
+}
 
-	void addClients(const Client *clients, int count) override {
-		
-	}
-
-	void advanceTo(int minute) override {
-		actionHandler->onWorkerSend(0, ResourceType::banana);
-		actionHandler->onWorkerBack(0, ResourceType::schweppes);
-		actionHandler->onClientDepart(0, 0, 1, 2);
-	}
-
-	virtual int getBanana() const {
-		return 0;
-	}
-
-	virtual int getSchweppes() const {
-		return 0;
-	}
-};
+int MrazMag::getSchweppes() const
+{
+    return schweppesAvailable;
+}
 
 Store *createStore() {
-	return new MyStore();
+	return new MrazMag();
 }
