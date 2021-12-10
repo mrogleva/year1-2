@@ -14,7 +14,7 @@ void MrazMag::init(int workerCount, int startBanana, int startSchweppes)
 
 void MrazMag::addClients(const Client *clients, int count)
 {
-    for(std::size_t i = 0; i < count; ++i)
+    for(size_t i = 0; i < count; ++i)
     {
         MrazMag_client temp(clients[i]);
         allClients.push_back(temp);
