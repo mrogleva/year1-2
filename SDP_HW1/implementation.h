@@ -10,10 +10,10 @@
 struct MrazMag : Store {
 	ActionHandler *actionHandler = nullptr;
 	int workersAvailable = 0; ///< workers ready to be sent to the storage
-	int bananasAvailable = 0; ///< amount of bananas available in store
+	int bananaAvailable = 0; ///< amount of bananas available in store
 	int schweppesAvailable = 0; ///< amount of schweppes available in store
 	
-	int bananasExpected = 0; ///< the amount of bananas, which will be brought by already sent workers
+	int bananaExpected = 0; ///< the amount of bananas, which will be brought by already sent workers
 	int schweppesExpected = 0; ///< the amount of schweppes, which will be brought by already sent workers
 
 	std::vector<MrazMag_client> allClients;
@@ -27,6 +27,9 @@ struct MrazMag : Store {
 	int getBanana() const;
 	int getSchweppes() const;
 
+	void playMinute(int minute);
+	bool needsBanana(size_t index);
+	bool needsSchweppes(size_t index);
 };
 
 Store *createStore();
