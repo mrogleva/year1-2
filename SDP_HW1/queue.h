@@ -5,20 +5,22 @@
  
 ///realisation of a queue, which will be used to represent our storage
 
-class queue
+class myQueue
 {
     worker* arr = nullptr;
-    size_t arrSize;
+    size_t arrSize = 0;
     int h = 0;
     int t = 0; ///< Marks the next free position 
 
 public:
-    /// In case of an unsuccessful allocation an exception is thrown
-    queue(size_t numOfWorkers);
+
+    myQueue();
     /// We won't need any copies of the queue
-    queue(const queue&) = delete;
-	queue& operator =(const queue&) = delete;
-    ~queue();
+    myQueue(const myQueue&) = delete;
+	myQueue& operator =(const myQueue&) = delete;
+    ~myQueue();
+    /// Creates the dynammyc array, which contains our queue 
+    void init(size_t numOfWorkers);
 
     /// How many workers are currently in the queue(storage)
     int size() const;

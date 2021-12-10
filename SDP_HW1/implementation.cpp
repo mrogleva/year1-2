@@ -10,6 +10,8 @@ void MrazMag::init(int workerCount, int startBanana, int startSchweppes)
     workersAvailable = workerCount;
     bananasAvailable = startBanana;
     schweppesAvailable = startSchweppes;
+
+    storage.init(workerCount);
 }
 
 void MrazMag::addClients(const Client *clients, int count)

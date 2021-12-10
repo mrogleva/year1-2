@@ -1,27 +1,32 @@
 #include "queue.h"
 
-queue::queue(size_t numOfWorkers)
+myQueue::myQueue()
+{
+
+}
+
+void myQueue::init(size_t numOfWorkers)
 {
     arrSize = numOfWorkers + 1;
     arr = new worker[arrSize];
 }
 
-queue::~queue()
+myQueue::~myQueue()
 {
     delete[] arr;
 }
 
-int queue::size() const
+int myQueue::size() const
 {
     return (arrSize - h + t) % arrSize;
 }
 
-bool queue::empty() const
+bool myQueue::empty() const
 {
     return h == t;
 }
 
-worker* queue::head() const
+worker* myQueue::head() const
 {
     if(!empty())
     {
@@ -30,12 +35,12 @@ worker* queue::head() const
     return nullptr;
 }
 
-bool queue::full() const
+bool myQueue::full() const
 {
     return arrSize == size() + 1; /// One free cell for the tail
 }
 
-void queue::enqueue(worker w)
+void myQueue::enqueue(worker w)
 {
     if(full())
     {
@@ -46,7 +51,7 @@ void queue::enqueue(worker w)
     t = (t + 1) % arrSize;
 }
     
-void queue::dequeue()
+void myQueue::dequeue()
 {
     if(empty())
     {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "interface.h"
+#include "queue.h"
 #include "client.h"
 
 /// This is sample empty implementation you can place your solution here or delete this and include tests to your solution
@@ -16,8 +17,8 @@ struct MrazMag : Store {
 	int schweppesExpected = 0; ///< the amount of schweppes, which will be brought by already sent workers
 
 	std::vector<MrazMag_client> allClients;
-	std::vector<MrazMag_client> queue;
-	//storage
+	std::vector<MrazMag_client> waitingList;
+	myQueue storage;
 
 	void setActionHandler(ActionHandler *handler) override;
 	void init(int workerCount, int startBanana, int startSchweppes) override;
@@ -25,6 +26,7 @@ struct MrazMag : Store {
 	void advanceTo(int minute) override;
 	int getBanana() const;
 	int getSchweppes() const;
+
 };
 
 Store *createStore();

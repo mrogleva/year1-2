@@ -27,7 +27,8 @@ TEST_CASE("MrazMag initialization")
 
 TEST_CASE("class queue")
 {
-    queue testQueue(3);
+    myQueue testQueue;
+    testQueue.init(3);
     REQUIRE(testQueue.size() == 0);
     REQUIRE(testQueue.empty() == true);
     REQUIRE(testQueue.full() == false);
