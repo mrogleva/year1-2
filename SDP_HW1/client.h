@@ -3,6 +3,7 @@
 #include <vector>
 #include "interface.h"
 
+/// Named it like that, because it looks cool
 struct MrazMag_client : Client{
     static int indexGen;
 

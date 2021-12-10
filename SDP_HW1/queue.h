@@ -31,5 +31,4 @@ public:
     void enqueue(worker w);
     /// Used when a worker leaves the storage
     void dequeue();
-
 };
