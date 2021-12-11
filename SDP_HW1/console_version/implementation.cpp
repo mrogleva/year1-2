@@ -1,5 +1,7 @@
 #include "implementation.h"
 
+const int RESTOCK_AMOUNT = 100;
+
 void MrazMag::setActionHandler(ActionHandler *handler) 
 {
     actionHandler = handler;
@@ -77,15 +79,18 @@ void MrazMag::playMinute(int minute)
         {
             storage.dequeue();
             backWithBanana += 1;
-            bananaExpected -= 100;
-            bananaAvailable += 100;
+            bananaExpected -= RESTOCK_AMOUNT;
+            bananaAvailable += RESTOCK_AMOUNT;
         }
-        if(storage.head()->sentFor == ResourceType::schweppes)
+        if(storage.head()->minuteReturn == minute)
         {
-            storage.dequeue();
-            backWithSchweppes += 1;
-            schweppesExpected -= 100;
-            schweppesAvailable += 100;
+            if(storage.head()->sentFor == ResourceType::schweppes)
+            {
+                storage.dequeue();
+                backWithSchweppes += 1;
+                schweppesExpected -= RESTOCK_AMOUNT;
+                schweppesAvailable += RESTOCK_AMOUNT;
+            }
         }
     }
     for(size_t i = 0; i < backWithBanana; ++i)
@@ -178,11 +183,11 @@ void MrazMag::arrivals(size_t i)
             > allClients[i].banana - (bananaAvailable + bananaExpected))
             {
                 sentForSchweppes += 1;
-                schweppesExpected += 100;
+                schweppesExpected += RESTOCK_AMOUNT;
             }
             else{
                 sentForBanana += 1;
-                bananaExpected += 100;
+                bananaExpected += RESTOCK_AMOUNT;
             }
             workersAvailable -= 1;
         }

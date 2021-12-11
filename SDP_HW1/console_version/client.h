@@ -3,6 +3,7 @@
 #include <vector>
 #include "interface.h"
 
+/// Represents a client in MrazMag.
 /// Named it like that, because it looks cool
 struct MrazMag_client : Client{
     int index; ///< added by the store
