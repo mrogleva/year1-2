@@ -5,10 +5,8 @@
 
 /// Named it like that, because it looks cool
 struct MrazMag_client : Client{
-    static int indexGen;
-
-    int index; ///< automatically generated
-    int leaveTime;
+    int index; ///< added by the store
+    int leaveTime; ///< added by the store
     bool readyToGo = false; ///< if the purchase is fulfilled and or it is time to leave
 
     int bananaTaken = 0;

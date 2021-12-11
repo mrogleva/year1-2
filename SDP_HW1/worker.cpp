@@ -5,3 +5,8 @@ sentFor(sentFor), minuteSent(minuteSent)
 {
     minuteReturn = minuteSent + 60;
 }
+
+worker::worker()
+{
+    
+}

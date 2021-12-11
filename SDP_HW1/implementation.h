@@ -16,6 +16,8 @@ struct MrazMag : Store {
 	int bananaExpected = 0; ///< the amount of bananas, which will be brought by already sent workers
 	int schweppesExpected = 0; ///< the amount of schweppes, which will be brought by already sent workers
 
+	int idGen = 0;
+	
 	std::vector<MrazMag_client> allClients;
 	std::vector<MrazMag_client> waitingList;
 	myQueue storage;
@@ -29,7 +31,7 @@ struct MrazMag : Store {
 
 	/// Executes all the actions that must happen in a single minute
 	void playMinute(int minute);
-	/// Sends workers to the storage on (one)clients arrival
+	/// Serves client if possible OR sends workers to the storage if needed and possible.
 	void arrivals(size_t i);
 	bool needsBanana(size_t index);
 	bool needsSchweppes(size_t index);

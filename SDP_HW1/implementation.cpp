@@ -19,13 +19,16 @@ void MrazMag::addClients(const Client *clients, int count)
     for(size_t i = 0; i < count; ++i)
     {
         MrazMag_client temp(clients[i]);
+        temp.index = idGen;
         allClients.push_back(temp);
+
+        idGen += 1;
     }
 }
 
 void MrazMag::advanceTo(int minute) 
 {
-    for(int i = 0; i < minute; ++i)
+    for(int i = 0; i <= minute; ++i)
     {
         playMinute(i);
     }
@@ -66,33 +69,34 @@ void MrazMag::playMinute(int minute)
             waitingList.push_back(allClients[i]);
         }
     }
-    /// Are there workers coming back from the storage?
+    // /// Are there workers coming back from the storage?
     size_t backWithBanana = 0, backWithSchweppes = 0;
-    while(storage.head()->minuteReturn == minute)
+    while(storage.head() && (storage.head()->minuteReturn == minute))
     {
         if(storage.head()->sentFor == ResourceType::banana)
         {
+            storage.dequeue();
             backWithBanana += 1;
+            bananaExpected -= 100;
+            bananaAvailable += 100;
         }
         if(storage.head()->sentFor == ResourceType::schweppes)
         {
+            storage.dequeue();
             backWithSchweppes += 1;
+            schweppesExpected -= 100;
+            schweppesAvailable += 100;
         }
     }
     for(size_t i = 0; i < backWithBanana; ++i)
     {
-        storage.dequeue();
-        bananaExpected -= 100;
-        bananaAvailable += 100;
         actionHandler->onWorkerBack(minute, ResourceType::banana);
     }
     for(size_t i = 0; i < backWithSchweppes; ++i)
     {
-        storage.dequeue();
-        schweppesExpected -= 100;
-        schweppesAvailable += 100;
         actionHandler->onWorkerBack(minute, ResourceType::schweppes);
     }
+
     /// Are there clients who need to go because their wait time is over before their request is completed?
     for(size_t i = 0; i < waitingList.size(); ++i)
     {
@@ -120,6 +124,7 @@ void MrazMag::playMinute(int minute)
             waitingList[i].readyToGo = true;
         }
     }
+   
     /// Is there any other client whose order can be completed now
     for(size_t i = 0; i < waitingList.size(); ++i)
     {
@@ -134,6 +139,7 @@ void MrazMag::playMinute(int minute)
             waitingList[i].readyToGo = true;
         }
     }
+    
     /// All the clients that are ready to go leave
     for(size_t i = 0; i < waitingList.size(); )
     {
@@ -156,9 +162,9 @@ void MrazMag::arrivals(size_t i)
     {
         /// Gives what is needed to the client and marks him ready to leave
         bananaAvailable -= allClients[i].banana;
-        waitingList[i].bananaTaken = waitingList[i].banana;
+        allClients[i].bananaTaken = allClients[i].banana;
         schweppesAvailable -= allClients[i].schweppes;
-        waitingList[i].schweppesTaken = waitingList[i].schweppes;
+        allClients[i].schweppesTaken = allClients[i].schweppes;
         allClients[i].readyToGo = true;
     }
     else{
@@ -172,26 +178,25 @@ void MrazMag::arrivals(size_t i)
             > allClients[i].banana - (bananaAvailable + bananaExpected))
             {
                 sentForSchweppes += 1;
+                schweppesExpected += 100;
             }
             else{
                 sentForBanana += 1;
+                bananaExpected += 100;
             }
+            workersAvailable -= 1;
         }
         /// Firstly log the workers, sent for banana
         for(size_t j = 0; j < sentForBanana; ++j)
         {
             worker w(ResourceType::banana, allClients[i].arriveMinute);
             storage.enqueue(w);
-            bananaExpected += 100;
-            workersAvailable -= 1;
             actionHandler->onWorkerSend(allClients[i].arriveMinute, ResourceType::banana);
         }
         for(size_t j = 0; j < sentForSchweppes; ++j)
         {
             worker w(ResourceType::schweppes, allClients[i].arriveMinute);
             storage.enqueue(w);
-            schweppesExpected += 100;
-            workersAvailable -= 1;
             actionHandler->onWorkerSend(allClients[i].arriveMinute, ResourceType::schweppes);
         }
     }

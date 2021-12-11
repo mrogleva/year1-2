@@ -9,4 +9,5 @@ struct worker
     int minuteReturn;
 
     worker(ResourceType sentFor, int minuteSent);
+    worker();
 };
