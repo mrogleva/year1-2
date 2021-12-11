@@ -11,6 +11,9 @@ struct MrazMag_client : Client{
     int leaveTime;
     bool readyToGo = false; ///< if the purchase is fulfilled and or it is time to leave
 
+    int bananaTaken = 0;
+    int schweppesTaken = 0;
+
     MrazMag_client(int arriveMinute, int banana, int schweppes, int maxWaitTime);
     MrazMag_client(Client client);
 };

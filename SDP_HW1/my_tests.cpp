@@ -3,11 +3,11 @@
 #include "queue.h"
 #include "catch2.hpp"
 
-TEST_CASE("MrazMag initialization")
+TEST_CASE("MrazMag")
 {
     MrazMag test;
     test.init(1, 2, 0);
-    REQUIRE(test.bananasAvailable == 2);
+    REQUIRE(test.bananaAvailable == 2);
     REQUIRE(test.schweppesAvailable == 0);
 
     std::vector<Client> clientsList = {
