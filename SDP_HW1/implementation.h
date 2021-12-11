@@ -27,11 +27,12 @@ struct MrazMag : Store {
 	int getBanana() const;
 	int getSchweppes() const;
 
+	/// Executes all the actions that must happen in a single minute
 	void playMinute(int minute);
-	bool needsBanana(size_t index);
-	bool needsSchweppes(size_t index);
 	/// Sends workers to the storage on (one)clients arrival
 	void arrivals(size_t i);
+	bool needsBanana(size_t index);
+	bool needsSchweppes(size_t index);
 };
 
 Store *createStore();

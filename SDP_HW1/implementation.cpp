@@ -25,9 +25,10 @@ void MrazMag::addClients(const Client *clients, int count)
 
 void MrazMag::advanceTo(int minute) 
 {
-    // actionHandler->onWorkerSend(0, ResourceType::banana);
-    // actionHandler->onWorkerBack(0, ResourceType::schweppes);
-    // actionHandler->onClientDepart(0, 0, 1, 2);
+    for(int i = 0; i < minute; ++i)
+    {
+        playMinute(i);
+    }
 }
 
 int MrazMag::getBanana() const
